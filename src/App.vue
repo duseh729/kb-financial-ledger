@@ -1,12 +1,12 @@
 <template lang="">
+
   <div>
+    <Header />
     테스트테스트
   </div>
 </template>
-<script>
-export default {
-  name: "App"
-}
+<script setup>
+import Header from './components/Header.vue';
 </script>
 <style lang="">
   
