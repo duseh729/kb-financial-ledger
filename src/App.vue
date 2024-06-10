@@ -1,13 +1,16 @@
 <template lang="">
   <div>
-    테스트테스트
+    <Header />
+    <div class="root-container">
+      <router-view></router-view>
+    </div>
   </div>
 </template>
-<script>
-export default {
-  name: "App"
-}
+<script setup>
+import Header from "./components/Header.vue";
 </script>
-<style lang="">
-  
+<style scoped>
+.root-container {
+  padding: 32px;
+}
 </style>
