@@ -4,13 +4,29 @@
     <div class="root-container">
       <router-view></router-view>
     </div>
+    <!-- <router-view></router-view> -->
+    <button @click="modalOpen">Modal</button>
+    <!-- {{ modalCheck }} -->
+    <IncomeExpenseForm  :showModal="modalCheck" @form-submitted="handleSubmit" />
   </div>
 </template>
+
 <script setup>
-import Header from "./components/Header.vue";
+import { ref } from 'vue';
+import Header from './components/Header.vue';
+import IncomeExpenseForm from './components/IncomeExpenseForm.vue';
+
+const modalCheck = ref(false);
+
+const modalOpen = () => {
+  modalCheck.value = true;
+};
+
+const handleSubmit = (data) => {
+  console.log('Form submitted:', data);
+};
 </script>
-<style scoped>
-.root-container {
-  padding: 32px;
-}
+
+<style>
+/* 스타일링 */
 </style>
