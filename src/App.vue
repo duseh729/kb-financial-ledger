@@ -1,5 +1,9 @@
-<template>
-  <div id="app">
+<template lang="">
+  <div>
+    <Header />
+    <div class="root-container">
+      <router-view></router-view>
+    </div>
     <!-- <router-view></router-view> -->
     <button @click="modalOpen">Modal</button>
     <!-- {{ modalCheck }} -->
@@ -9,6 +13,7 @@
 
 <script setup>
 import { ref } from 'vue';
+import Header from './components/Header.vue';
 import IncomeExpenseForm from './components/IncomeExpenseForm.vue';
 
 const modalCheck = ref(false);
