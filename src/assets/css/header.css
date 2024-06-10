@@ -1,0 +1,39 @@
+nav{
+  background-color: tomato;
+  padding: 0 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.nav-item-padding{
+  padding: 18px 28px;
+
+}
+
+#logo{
+  font-size: 24px;
+  font-style: italic;
+  font-weight: 700;
+  padding: 0px 6px;
+}
+
+ul{
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+ul>li{
+}
+ul>li:hover{
+  background-color: black;
+}
+
+.flex-default{
+  display: flex;
+  flex-direction: row;
+}
+/* .vertical-center{
+  display: flex;
+  align-items: center;
+} */

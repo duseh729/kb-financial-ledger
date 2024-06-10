@@ -1,4 +1,11 @@
 /* 공용 스타일 파일 */
+*{
+  box-sizing: border-box;
+}
+
+.cursor-pointer{
+  cursor: pointer;
+}
 .chartWrapper{
     margin-left: auto;
 }
