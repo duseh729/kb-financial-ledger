@@ -1,5 +1,10 @@
 <template>
   <div>
+    <!-- 이전 달로 이동하는 버튼 -->
+    <button @click="goToPreviousMonth">이전 달</button>
+    <!-- 다음 달로 이동하는 버튼 -->
+    <button @click="goToNextMonth">다음 달</button>
+
     <table class="table table-responsive">
       <thead>
         <tr>
@@ -131,6 +136,28 @@ const getNextMonthDates = lastDate => {
     nextMonthDates.push(date);
   }
   return nextMonthDates;
+};
+
+// 이전 달로 이동하는 함수
+const goToPreviousMonth = () => {
+  if (month.value === 0) {
+    year.value--;
+    month.value = 11;
+  } else {
+    month.value--;
+  }
+  getDates();
+};
+
+// 다음 달로 이동하는 함수
+const goToNextMonth = () => {
+  if (month.value === 11) {
+    year.value++;
+    month.value = 0;
+  } else {
+    month.value++;
+  }
+  getDates();
 };
 
 onMounted(() => {
