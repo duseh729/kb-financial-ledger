@@ -1,13 +1,16 @@
 <template lang="">
-
   <div>
     <Header />
-    테스트테스트
+    <div class="root-container">
+      <router-view></router-view>
+    </div>
   </div>
 </template>
 <script setup>
-import Header from './components/Header.vue';
+import Header from "./components/Header.vue";
 </script>
-<style lang="">
-  
+<style scoped>
+.root-container {
+  padding: 32px;
+}
 </style>
