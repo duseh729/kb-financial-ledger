@@ -1,11 +1,13 @@
 <template lang="">
   <div>
-    테스트테스트
+    <Statistic/>
   </div>
 </template>
 <script>
+import Statistic from './components/Statistics.vue';
 export default {
-  name: "App"
+  name: "App",
+  components: {Statistic}
 }
 </script>
 <style lang="">
