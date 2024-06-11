@@ -1,0 +1,50 @@
+[
+    {
+      "date": "2024-06-10",
+      "asset": "카드",
+      "category": "식비",
+      "amount": 200000,
+      "description": "식비 지출",
+      "type": "expense"
+    },
+    {
+      "date": "2024-06-10",
+      "asset": "은행",
+      "category": "월급",
+      "amount": 5000000,
+      "description": "KB IT's Your Life 출판장려금",
+      "type": "income"
+    },
+    {
+      "date": "2024-05-25",
+      "asset": "카드",
+      "category": "교통비",
+      "amount": 50000,
+      "description": "버스비",
+      "type": "expense"
+    },
+    {
+      "date": "2024-05-20",
+      "asset": "은행",
+      "category": "월급",
+      "amount": 3000000,
+      "description": "월급",
+      "type": "income"
+    },
+    {
+      "date": "2024-04-15",
+      "asset": "카드",
+      "category": "쇼핑",
+      "amount": 100000,
+      "description": "의류 구매",
+      "type": "expense"
+    },
+    {
+      "date": "2024-04-10",
+      "asset": "은행",
+      "category": "월급",
+      "amount": 4000000,
+      "description": "월급",
+      "type": "income"
+    }
+]
