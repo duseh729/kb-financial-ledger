@@ -189,7 +189,7 @@ const setupPagination = () => {
   align-items: center;
   margin-bottom: 20px;
   margin: 25px 0 25px 50px;
-  width: 160px;
+  width: 170px;
   padding: 0;
 }
 
