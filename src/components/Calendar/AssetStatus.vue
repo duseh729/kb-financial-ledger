@@ -2,15 +2,15 @@
   <div>
     <div>
       <div class="title">전체</div>
-      <p class="value">3,300,000원</p>
+      <p class="value">{{income - expense}}원</p>
     </div>
     <div>
       <div class="title">수입</div>
-      <p class="value" style="color: blue;" >3,300,000원</p>
+      <p class="value" style="color: blue">{{income}}원</p>
     </div>
     <div>
       <div class="title">지출</div>
-      <p class="value" style="color: red">3,300,000원</p>
+      <p class="value" style="color: red">{{expense}}원</p>
     </div>
     <div>
       <div class="title">이체</div>
@@ -18,7 +18,64 @@
     </div>
   </div>
 </template>
-<script setup></script>
+
+<script setup>
+import { defineProps, ref, watch } from 'vue';
+
+const props = defineProps({
+  financialLedgerData: {
+    type: Object,
+    required: true,
+  },
+  year: {
+    type: Number,
+    required: true,
+  },
+  month: {
+    type: Number,
+    required: true,
+  },
+});
+
+const income = ref(0);
+const expense = ref(0);
+
+const updateIncomeExpense = () => {
+  income.value = 0;
+  expense.value = 0;
+
+  const yearData = props.financialLedgerData[props.year];
+  if (yearData) {
+    const monthData = yearData[String(props.month).padStart(2, '0')];
+    if (monthData) {
+      for (const [key, value] of Object.entries(monthData)) {
+        if (value.type === 'income') {
+          income.value += value.amount;
+        } else if (value.type === 'expense') {
+          expense.value += value.amount;
+        }
+      }
+    }
+  }
+};
+
+// Watcher 설정
+watch(
+  () => props.financialLedgerData,
+  () => {
+    updateIncomeExpense();
+  },
+  { immediate: true, deep: true }
+);
+
+watch(
+  () => [props.year, props.month],
+  () => {
+    updateIncomeExpense();
+  }
+);
+</script>
+
 <style>
 @import url("../../assets/css/Calendar/asset-status.css");
 </style>
