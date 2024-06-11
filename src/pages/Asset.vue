@@ -1,7 +1,7 @@
-<!-- 메인 페이지 -->
+<!-- 자산 페이지 -->
 <template lang="">
   <div>
-    홈임
+    자산임
   </div>
 </template>
 <script>

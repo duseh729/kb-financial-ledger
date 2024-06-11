@@ -1,7 +1,7 @@
-<!-- 메인 페이지 -->
+<!-- 내역 페이지 -->
 <template lang="">
   <div>
-    홈임
+    
   </div>
 </template>
 <script>
