@@ -1,10 +1,12 @@
 <template lang="">
   <div>
-    <!-- 이전 달로 이동하는 버튼 -->
-    <button @click="goToPreviousMonth">이전 달</button>
-    <!-- 다음 달로 이동하는 버튼 -->
-    <button @click="goToNextMonth">다음 달</button>
-
+    <div style="margin-bottom: 12px;">
+      <!-- 이전 달로 이동하는 버튼 -->
+      <button class="calendar-move-button" @click="goToPreviousMonth">◀️</button>
+      <span>{{`${year}년 ${month+1}월`}}</span>
+      <!-- 다음 달로 이동하는 버튼 -->
+      <button class="calendar-move-button" @click="goToNextMonth">▶️</button>
+    </div>
     <table class="">
       <thead>
         <tr>

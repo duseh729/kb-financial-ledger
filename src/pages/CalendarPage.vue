@@ -1,9 +1,9 @@
 <!-- 달력 페이지 -->
 <template>
   <div style="padding: 50px">
-    <div style="display: flex">
+    <div style="display: flex; gap: 18px;">
       <Calendar />
-      <div>
+      <div style="position: relative; top:39px;">
         <AssetStatus />
         <MemoForm />
       </div>
