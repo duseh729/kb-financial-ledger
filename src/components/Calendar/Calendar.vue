@@ -27,7 +27,7 @@
               color: dateIndex === 0 ? 'red' : dateIndex === 6 ? 'blue' : 'inherit',
               backgroundColor: date[1] ? '#eee' : 'inherit',
             }"
-            @click="pickDate({date: date[0], monthValue: date[2]})"
+            @click="pickDate({ date: date[0], monthValue: date[2] })"
           >
             <span :class="{ today: isToday(date) }">{{ date[0] }}</span>
           </td>
@@ -43,6 +43,10 @@ import { defineProps } from "vue";
 
 // Props 정의
 const props = defineProps({
+  financialLedgerData:{
+    type: Object,
+    required: true
+  },
   today: {
     type: Object,
     required: true,
@@ -110,7 +114,7 @@ const getDates = () => {
   const prevMonthDates = getPrevMonthDates(firstDay);
 
   for (let i = 0; i < prevMonthDates.length; i++) {
-    prevMonthDates[i] = [prevMonthDates[i], true, 'prev'];
+    prevMonthDates[i] = [prevMonthDates[i], true, "prev"];
   }
 
   const thisMonthDates = getThisMonthDates(lastDate);
@@ -120,7 +124,7 @@ const getDates = () => {
 
   const nextMonthDates = getNextMonthDates(lastDate);
   for (let i = 0; i < nextMonthDates.length; i++) {
-    nextMonthDates[i] = [nextMonthDates[i], true, 'next'];
+    nextMonthDates[i] = [nextMonthDates[i], true, "next"];
   }
 
   // 이전 달, 이번 달, 다음 달의 날짜를 합쳐서 하나의 배열로 만듭니다.
@@ -197,11 +201,11 @@ const goToNextMonth = () => {
 
 // 캘린더 날짜 선택 함수
 const pickDate = value => {
-  console.log(value)
-  if(value.monthValue==='prev'){
-    goToPreviousMonth()
-  }else if(value.monthValue==='next'){
-    goToNextMonth()
+  // console.log(value)
+  if (value.monthValue === "prev") {
+    goToPreviousMonth();
+  } else if (value.monthValue === "next") {
+    goToNextMonth();
   }
   props.dateChange(value.date);
 };
