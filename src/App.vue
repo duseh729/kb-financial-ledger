@@ -5,9 +5,11 @@
       <router-view></router-view>
     </div>
     <!-- <router-view></router-view> -->
-    <button @click="modalOpen">Modal</button>
+    <button class="fixed-modal-button" @click="modalOpen">+</button>
     <!-- {{ modalCheck }} -->
-    <IncomeExpenseForm  :showModal="modalCheck" @form-submitted="handleSubmit" />
+    <IncomeExpenseForm :onClose="modalClose" :showModal="modalCheck" @form-submitted="handleSubmit" />
+   
+    
     <Statistic/>
   </div>
 </template>
@@ -21,6 +23,9 @@ const modalCheck = ref(false);
 
 const modalOpen = () => {
   modalCheck.value = true;
+};
+const modalClose = () => {
+  modalCheck.value = false;
 };
 
 const handleSubmit = (data) => {

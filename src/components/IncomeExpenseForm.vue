@@ -1,33 +1,44 @@
 <template>
-  <div :class="{ 'modal': !showModal }">
+  <!-- <div :class="{ 'modal': !showModal }"> -->
+  <div v-if="showModal" class="modal-overlay" @click.self="closeModal">
     <div class="modal-content">
       <div class="income-expense-form">
-        <h2>수입 및 지출 기록</h2>
+        <div class="form-group">
+          <select id="type" v-model="type" required>
+            <option value="income">입력(수입)</option>
+            <option value="expense">입력(지출)</option>
+          </select>
+          <button class="close-button" @click="closeModal">X</button>
+        </div>
+        <div class="form-group">
+          <label for="date">일자</label>
+          <input type="date" id="date" v-model="date" required>
+        </div>
+        <div class="form-group">
+          <label for="asset">자산</label>
+          <select id="asset" v-model="asset" required>
+            <option value="card">카드</option>
+            <option value="bank">은행</option>
+            <option value="cash">현금</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="category">분류</label>
+          <input type="text" id="category" v-model="category">
+        </div>
         <form @submit.prevent="postData">
           <div class="form-group">
-            <label for="amount">금액:</label>
+            <label for="amount">금액</label>
             <input type="number" id="amount" v-model="amount" required>
           </div>
           <div class="form-group">
-            <label for="type">유형:</label>
-            <select id="type" v-model="type" required>
-              <option value="income">수입</option>
-              <option value="expense">지출</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label for="date">날짜:</label>
-            <input type="date" id="date" v-model="date" required>
-          </div>
-          <div class="form-group">
-            <label for="category">카테고리:</label>
-            <input type="text" id="category" v-model="category">
-          </div>
-          <div class="form-group">
-            <label for="memo">메모:</label>
+            <label for="memo">내용</label>
             <textarea id="memo" v-model="memo"></textarea>
           </div>
-          <button type="submit">제출</button>
+          <div class="button-container">
+            <button type="submit">저장</button>
+          </div>
+
         </form>
       </div>
     </div>
@@ -39,7 +50,8 @@ import { ref, defineProps } from 'vue';
 import axios from 'axios';
 
 const props = defineProps({
-  showModal: Boolean
+  showModal: Boolean,
+  onClose: Function //모달닫기 콜백함수
 });
 
 const amount = ref(null);
@@ -47,36 +59,38 @@ const type = ref('income');
 const category = ref('');
 const memo = ref('');
 const date = ref('');
+const asset = ref('');
 
-const submitForm = () => {
-  const data = {
-    amount: amount.value,
-    type: type.value,
-    category: category.value,
-    memo: memo.value,
-    date: date.value
-  };
-  const formSubmittedEvent = new CustomEvent('form-submitted', { detail: data });
-  window.dispatchEvent(formSubmittedEvent);
-  
-  amount.value = null;
-  type.value = 'income';
-  category.value = '';
-  memo.value = '';
-  date.value = '';
-};
+// const submitForm = () => {
+//   const data = {
+//     amount: amount.value,
+//     type: type.value,
+//     category: category.value,
+//     memo: memo.value,
+//     date: date.value
+//   };
+//   const formSubmittedEvent = new CustomEvent('form-submitted', { detail: data });
+//   window.dispatchEvent(formSubmittedEvent);
+
+//   amount.value = null;
+//   type.value = 'income';
+//   category.value = '';
+//   memo.value = '';
+//   date.value = '';
+// };
 
 const postData = () => {
   const data = {
-    amount: amount.value,
-    type: type.value,
+    date: date.value,
+    asset: asset.value,
     category: category.value,
-    memo: memo.value,
-    date: date.value
+    amount: amount.value,
+    description: memo.value,
+    type: type.value,
   };
-  
- console.log(data)
-  axios.post("http://localhost:3000/test", data)
+
+  // console.log(data)
+  axios.post("http://localhost:3000/temp", data)
     .then(response => {
       console.log(response.data);
     })
@@ -84,6 +98,12 @@ const postData = () => {
       console.error('Error:', error);
     });
 }
+
+const closeModal = () => {
+  // console.log()
+  props.onClose();
+}
+
 </script>
 
 <style scoped>
