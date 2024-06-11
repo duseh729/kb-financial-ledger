@@ -16,7 +16,6 @@
 import { ref } from 'vue';
 import Header from './components/Header.vue';
 import IncomeExpenseForm from './components/IncomeExpenseForm.vue';
-import Statistic from './components/Statistics.vue';
 
 const modalCheck = ref(false);
 
