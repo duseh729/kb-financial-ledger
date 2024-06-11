@@ -9,7 +9,8 @@
     <table class="table table-responsive">
       <thead>
         <tr>
-          <th scope="col" v-for="(day, index) in days" :key="day" class="day" :style="{ color: index === 0 ? 'red' : index === 6 ? 'blue' : 'inherit' }">
+          <th scope="col" v-for="(day, index) in days" :key="day" class="day"
+            :style="{ color: index === 0 ? 'red' : index === 6 ? 'blue' : 'inherit' }">
             {{ day }}
           </th>
           <!-- 요일 출력 -->
@@ -17,16 +18,11 @@
       </thead>
       <tbody>
         <tr v-for="(week, weekIndex) in weeks" :key="weekIndex">
-          <td
-            v-for="(date, dateIndex) in week"
-            :key="dateIndex"
-            :class="{ today: isToday(date), 'prev-or-next-month': isPrevOrNextMonth(date) }"
-            class="date"
-            :style="{
+          <td v-for="(date, dateIndex) in week" :key="dateIndex"
+            :class="{ today: isToday(date), 'prev-or-next-month': isPrevOrNextMonth(date) }" class="date" :style="{
               color: dateIndex === 0 ? 'red' : dateIndex === 6 ? 'blue' : 'inherit',
               backgroundColor: date[1] ? '#eee' : 'inherit',
-            }"
-          >
+            }">
             <span :class="{ today: isToday(date) }">{{ date[0] }}</span>
           </td>
         </tr>
@@ -168,5 +164,6 @@ onMounted(() => {
 </script>
 
 <style scoped>
-@import url("../assets/css/Home/date.css");
+/* @import url("../assets/css/Home/date.css"); 06_11 대희 수정*/
+@import url("C:\Users\student\Documents\project\kb-financial-ledger\src\assets\css\home\date.css");
 </style>

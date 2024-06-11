@@ -1,43 +1,65 @@
 .income-expense-form {
-    /* 스타일링 예시 */
-    max-width: 400px;
+    width: 700px;
     margin: auto;
     padding: 20px;
     border: 1px solid #ccc;
     border-radius: 5px;
-  }
-  
-  .form-group {
+}
+
+.form-group {
     margin-bottom: 15px;
-  }
-  
-  label {
-    font-weight: bold;
-  }
-  
-  input[type="number"],
-  select,
-  textarea,
-  input[type="date"],
-  button {
+}
+
+.button-container {
+    text-align: center;
+}
+label {
+    color: rgb(114, 114, 114);
+    font-family: 'Noto Sans';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 28px;
+}
+
+input[type='number'],
+select,
+textarea,
+input[type='date'],
+input[type='text'] {
     width: 100%;
     padding: 10px;
     border-radius: 5px;
     border: 1px solid #ccc;
     box-sizing: border-box;
     margin-top: 5px;
-  }
-  
-  textarea {
-    height: 100px; /* 원하는 높이로 조절하세요 */
-  }
-  
-  button {
-    background-color: #007bff;
+    background-color: #d9d9d9;
+}
+
+textarea {
+    height: 100px;
+}
+
+button[type='submit'] {
+    background-color: #ffbc00;
     color: #fff;
     cursor: pointer;
-  }
-  
-  button:hover {
+    width: 121px;
+    height: 40px;
+}
+
+button:hover {
     background-color: #0056b3;
-  }
+}
+
+/* 입력(수입) */
+#type {
+    width: 160px;
+    top: 383px;
+    font-family: 'Noto Sans';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 22px;
+    line-height: 30px;
+    color: #000000;
+}
