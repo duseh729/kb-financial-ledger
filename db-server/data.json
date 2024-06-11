@@ -1,11 +1,13 @@
-[
+{
+  "temp": [
     {
       "date": "2024-06-10",
       "asset": "카드",
       "category": "식비",
       "amount": 200000,
       "description": "식비 지출",
-      "type": "expense"
+      "type": "expense",
+      "id": "6e4d"
     },
     {
       "date": "2024-06-10",
@@ -13,7 +15,8 @@
       "category": "월급",
       "amount": 5000000,
       "description": "KB IT's Your Life 출판장려금",
-      "type": "income"
+      "type": "income",
+      "id": "ef6a"
     },
     {
       "date": "2024-05-25",
@@ -21,7 +24,8 @@
       "category": "교통비",
       "amount": 50000,
       "description": "버스비",
-      "type": "expense"
+      "type": "expense",
+      "id": "1bac"
     },
     {
       "date": "2024-05-20",
@@ -29,7 +33,8 @@
       "category": "월급",
       "amount": 3000000,
       "description": "월급",
-      "type": "income"
+      "type": "income",
+      "id": "b165"
     },
     {
       "date": "2024-04-15",
@@ -37,7 +42,8 @@
       "category": "쇼핑",
       "amount": 100000,
       "description": "의류 구매",
-      "type": "expense"
+      "type": "expense",
+      "id": "8ce2"
     },
     {
       "date": "2024-04-10",
@@ -45,6 +51,26 @@
       "category": "월급",
       "amount": 4000000,
       "description": "월급",
+      "type": "income",
+      "id": "6ced"
+    },
+    {
+      "id": "2b18",
+      "date": "2024-06-13",
+      "asset": "cash",
+      "category": "월급",
+      "amount": 16000000,
+      "description": "도연이 내가 월급줌 ㅅㅂ 개비쌈",
       "type": "income"
+    },
+    {
+      "id": "8957",
+      "date": "2024-06-13",
+      "asset": "card",
+      "category": "교통비",
+      "amount": 500000,
+      "description": "아 신분당선 너무비싸 짜증나",
+      "type": "expense"
     }
-]
+  ]
+}

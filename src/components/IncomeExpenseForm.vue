@@ -1,5 +1,6 @@
 <template>
-  <div :class="{ 'modal': !showModal }">
+  <!-- <div :class="{ 'modal': !showModal }"> -->
+  <div v-if="showModal" class="modal-overlay" @click.self="closeModal">
     <div class="modal-content">
       <div class="income-expense-form">
         <div class="form-group">
@@ -58,42 +59,44 @@ const type = ref('income');
 const category = ref('');
 const memo = ref('');
 const date = ref('');
+const asset = ref('');
 
-const submitForm = () => {
-  const data = {
-    amount: amount.value,
-    type: type.value,
-    category: category.value,
-    memo: memo.value,
-    date: date.value
-  };
-  const formSubmittedEvent = new CustomEvent('form-submitted', { detail: data });
-  window.dispatchEvent(formSubmittedEvent);
+// const submitForm = () => {
+//   const data = {
+//     amount: amount.value,
+//     type: type.value,
+//     category: category.value,
+//     memo: memo.value,
+//     date: date.value
+//   };
+//   const formSubmittedEvent = new CustomEvent('form-submitted', { detail: data });
+//   window.dispatchEvent(formSubmittedEvent);
 
-  amount.value = null;
-  type.value = 'income';
-  category.value = '';
-  memo.value = '';
-  date.value = '';
-};
+//   amount.value = null;
+//   type.value = 'income';
+//   category.value = '';
+//   memo.value = '';
+//   date.value = '';
+// };
 
 const postData = () => {
   const data = {
-    amount: amount.value,
-    type: type.value,
+    date: date.value,
+    asset: asset.value,
     category: category.value,
-    memo: memo.value,
-    date: date.value
+    amount: amount.value,
+    description: memo.value,
+    type: type.value,
   };
 
-  console.log(data)
-  // axios.post("http://localhost:3000/test", data)
-  //   .then(response => {
-  //     console.log(response.data);
-  //   })
-  //   .catch(error => {
-  //     console.error('Error:', error);
-  //   });
+  // console.log(data)
+  axios.post("http://localhost:3000/temp", data)
+    .then(response => {
+      console.log(response.data);
+    })
+    .catch(error => {
+      console.error('Error:', error);
+    });
 }
 
 const closeModal = () => {
