@@ -2,7 +2,7 @@
 <template lang="">
   <div>
     <div class="month-selector">
-      <select id="month" v-model="selectedMonth" @change="filterHistorysByMonth">
+      <select id="month" v-model="selectedMonth" @change="filterHistorysByMonth" class="month-dropdown">
         <option v-for="month in months" :key="month.value" :value="month.value">
           {{ month.label }}
         </option>
@@ -100,7 +100,7 @@ const filteredHistorys = ref([])
 
 const loadHistorys = async() => {
   try {
-    const response = await axios.get('/db-server/data.json')
+    const response = await axios.get('http://localhost:3000/temp')
     historys.value = response.data
     filterHistorysByMonth()
   } catch(error) {
@@ -188,15 +188,24 @@ const setupPagination = () => {
   display: flex;
   align-items: center;
   margin-bottom: 20px;
-  margin: 25px 0 25px 50px; 
+  margin: 25px 0 25px 50px;
+  width: 160px;
+  padding: 0;
 }
 
 .month-selector select {
   font-size: 22px;
   font-weight: bold;
+  text-align: center;
   border: none;
   border-radius: 5px;
   outline: none;
+  background-color: #fff;
+}
+
+.month-dropdown:hover,
+.month-dropdown:focus {
+  border-color: #555;
 }
 
 /* 요약 테이블 스타일 */
