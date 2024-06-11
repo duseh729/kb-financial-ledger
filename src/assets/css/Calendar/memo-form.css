@@ -1,0 +1,23 @@
+.memo-container{
+  width: 240px;
+  height: 385px;
+  /* text-align: center; */
+  padding: 8px;
+  background-color: #eee;
+  border-radius: 5px;
+}
+.memo-container h4{
+  text-align: center;
+}
+
+form {
+  margin-top: 32px;
+}
+label{
+  color: gray;
+}
+input{
+  border-radius: 5px;
+  padding: 10px;
+  border: 0;
+}

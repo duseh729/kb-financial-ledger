@@ -1,35 +1,37 @@
-nav{
-  background-color: tomato;
+nav {
+  background-color: #545045;
   padding: 0 16px;
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
-.nav-item-padding{
+.nav-item {
   padding: 18px 28px;
-
+  color: white;
 }
 
-#logo{
+#logo {
   font-size: 24px;
   font-style: italic;
   font-weight: 700;
   padding: 0px 6px;
+  color: white;
 }
 
-ul{
+ul {
   list-style-type: none;
   margin: 0;
   padding: 0;
 }
 
-ul>li{
+ul > li {
+  color: white;
 }
-ul>li:hover{
+ul > li:hover {
   background-color: black;
 }
 
-.flex-default{
+.flex-default {
   display: flex;
   flex-direction: row;
 }

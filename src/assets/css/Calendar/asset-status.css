@@ -1,0 +1,13 @@
+.title {
+  color: white;
+  background-color: rgb(72, 72, 72);
+  border-radius: 5px;
+  padding: 4px;
+  width: 240px;
+}
+
+.value {
+  padding: 10px;
+  width: 240px;
+  margin: 0;
+}
