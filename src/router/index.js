@@ -4,7 +4,7 @@ import IncomeExpenseForm from "../components/IncomeExpenseForm.vue";
 
 import Home from "../pages/Home.vue";
 import History from "../pages/History.vue";
-import Calendar from "../pages/Calendar.vue"
+import CalendarPage from "../pages/CalendarPage.vue"
 import Asset from "../pages/Asset.vue"
 import Statistics from '../pages/Statistics.vue'
 
@@ -13,7 +13,7 @@ const router = createRouter({
   routes: [
     { path: "/", component: Home },
     { path: "/history", component: History },
-    { path: "/calendar", component: Calendar },
+    { path: "/calendar", component: CalendarPage },
     { path: "/asset", component: Asset },
     { path: "/statistics", component: Statistics },
   ],
