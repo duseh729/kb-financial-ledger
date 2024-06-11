@@ -5,7 +5,7 @@
       <router-view></router-view>
     </div>
     <!-- <router-view></router-view> -->
-    <button @click="modalOpen">Modal</button>
+    <button class="fixed-modal-button" @click="modalOpen">+</button>
     <!-- {{ modalCheck }} -->
     <IncomeExpenseForm :onClose="modalClose" :showModal="modalCheck" @form-submitted="handleSubmit" />
    
