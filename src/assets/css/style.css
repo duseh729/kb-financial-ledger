@@ -6,21 +6,3 @@
 .cursor-pointer{
   cursor: pointer;
 }
-.chartWrapper{
-    margin-left: auto;
-}
-.monthlyChartWrapper{
-    display: block;
-}
-.detailChartWrapper{
-    width: 700px;
-    max-width: fit-content;
-    margin-left: auto;
-    margin-right: auto;
-    display: flex;
-}
-
-.wrapper{
-    display: flex;
-
-}

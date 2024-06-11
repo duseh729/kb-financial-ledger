@@ -168,5 +168,5 @@ onMounted(() => {
 </script>
 
 <style scoped>
-@import url("../assets/css/home/date.css");
+@import url("../assets/css/Home/date.css");
 </style>
