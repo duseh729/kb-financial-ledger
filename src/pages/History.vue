@@ -9,6 +9,24 @@
       </select>
     </div>
 
+    <div class="additional-filters">
+      <input type="date" v-model="filterDate" @change="filterHistorys" placeholder="날짜 선택">
+      <select v-model="filterAsset" @change="filterHistorys">
+        <option value="">자산 종류</option>
+        <option v-for="asset in assets" :key="asset" :value="asset">{{ asset }}</option>
+      </select>
+      <select v-model="filterCategory" @change="filterHistorys">
+        <option value="">분류 종류</option>
+        <option v-for="category in categories" :key="category" :value="category">{{ category }}</option>
+      </select>
+      <select v-model="filterType" @change="filterHistorys">
+        <option value="">수입/지출/이체</option>
+        <option value="income">수입</option>
+        <option value="expense">지출</option>
+        <option value="transfer">이체</option>
+      </select>
+    </div>
+
     <div class="summary">
       <table class="summary-table">
         <thead>
@@ -344,5 +362,30 @@ const setupPagination = () => {
 .pagination span {
   font-size: 16px;
   margin: 0 10px;
+}
+
+/* 필터링 검색 기능 */
+.filter-section {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin: 25px 50px;
+}
+
+.additional-filters {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  margin: 0 50px 0 50px;
+  width: 100%;
+}
+
+.additional-filters input,
+.additional-filters select {
+  padding: 5px;
+  font-size: 16px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  flex: 1;
 }
 </style>
