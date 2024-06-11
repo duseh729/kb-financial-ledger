@@ -1,6 +1,6 @@
-/* table td, table th{
-  padding: 0;
-} */
+table td, table th{
+  width: 200px;
+}
 
 .day {
   background-color: #eee;
@@ -8,7 +8,7 @@
 }
 
 .date {
-  height: 120px;
+  height: 110px;
   /* paddings: 6px; */
   border: 1px solid #b1b1b1;
   cursor: pointer;

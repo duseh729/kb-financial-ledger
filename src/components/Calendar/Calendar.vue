@@ -1,12 +1,11 @@
-<!-- 달력 페이지 -->
-<template>
-  <div style="padding: 12px">
+<template lang="">
+  <div>
     <!-- 이전 달로 이동하는 버튼 -->
     <button @click="goToPreviousMonth">이전 달</button>
     <!-- 다음 달로 이동하는 버튼 -->
     <button @click="goToNextMonth">다음 달</button>
 
-    <table class="table table-responsive">
+    <table class="">
       <thead>
         <tr>
           <th scope="col" v-for="(day, index) in days" :key="day" class="day" :style="{ color: index === 0 ? 'red' : index === 6 ? 'blue' : 'inherit' }">
@@ -34,7 +33,6 @@
     </table>
   </div>
 </template>
-
 <script setup>
 import { onMounted, ref } from "vue";
 
@@ -166,7 +164,6 @@ onMounted(() => {
   getDates();
 });
 </script>
-
-<style scoped>
-@import url("../assets/css/Home/date.css");
+<style>
+@import url("../../assets/css/Calendar/calendar.css");
 </style>
