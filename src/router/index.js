@@ -1,13 +1,21 @@
 import { createRouter, createWebHistory } from "vue-router";
-import App from '../App.vue';
+import App from "../App.vue";
 import IncomeExpenseForm from "../components/IncomeExpenseForm.vue";
 
 import Home from "../pages/Home.vue";
+import History from "../pages/History.vue";
+import Calendar from "../pages/Calendar.vue"
+import Asset from "../pages/Asset.vue"
+import Statistics from '../pages/Statistics.vue'
 
 const router = createRouter({
-  history: createWebHistory('/my-app.vue'),
+  history: createWebHistory("/my-app.vue"),
   routes: [
-    { path: "/", component: Home }
+    { path: "/", component: Home },
+    { path: "/history", component: History },
+    { path: "/calendar", component: Calendar },
+    { path: "/asset", component: Asset },
+    { path: "/statistics", component: Statistics },
   ],
 });
 
