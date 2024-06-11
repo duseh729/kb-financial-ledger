@@ -1,7 +1,7 @@
-<!-- 메인 페이지 -->
+<!-- 통계 페이지 -->
 <template lang="">
   <div>
-    홈임
+    통계임
   </div>
 </template>
 <script>
