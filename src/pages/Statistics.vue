@@ -80,6 +80,7 @@ function classify(data) {
 
   return {expenseData, incomeData };
 }
+
 const moveBackward = () => {
   if(curYearIdx.value == date.length - 1)
     return;
@@ -178,7 +179,7 @@ const getPreviousMonth = (yearMonth) => {
   let monthNum = parseInt(month);
 
   if (isNaN(yearNum) || isNaN(monthNum) || monthNum < 1 || monthNum > 12) {
-    // throw new Error('Invalid input format. Expected format: "YYYY년 M월".');
+    throw new Error('유효하지 않은 날짜 포맷');
   }
 
   // 이전 달 계산
@@ -191,7 +192,6 @@ const getPreviousMonth = (yearMonth) => {
 
   return `${yearNum}년 ${monthNum}월`;
 }
-
 
 </script>
 <style>

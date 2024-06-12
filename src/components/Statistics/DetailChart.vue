@@ -73,7 +73,7 @@ onUpdated(() =>{
   props.prevMonthData?.sort((o1, o2) => o1.day - o2.day)
   props.curMonthData?.sort((o1, o2) => o1.day - o2.day)
   Object.assign(prevChartPoints, generateAmountUsagePoint(props.prevMonthData != null ? props.prevMonthData : []))
-  Object.assign(curChartPoints, generateAmountUsagePoint(props.curMonthData))
+  Object.assign(curChartPoints, generateAmountUsagePoint(props.curMonthData != null ? props.curMonthData : []))
 })
 
 const generateAmountUsagePoint = (data) =>{
@@ -99,7 +99,6 @@ watch(prevChartPoints, () => {
   chartData.datasets[1].data = prevChartPoints;
   forceRerender.value++;
 })
-
 
 </script>
 <style></style>
