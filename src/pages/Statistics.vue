@@ -167,7 +167,11 @@ const groupDataByYearAndMonth = (data) => {
       const monthB = parseInt(b);
       return monthB - monthA;
     })
-  }));
+  })).sort((a, b) => {
+    const yearA = parseInt(a.year);
+    const yearB = parseInt(b.year);
+    return yearB - yearA;
+  });
 };
 
 const getPreviousMonth = (yearMonth) => {
