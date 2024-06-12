@@ -296,6 +296,8 @@ const setupPagination = () => {
   justify-content: center;
   margin-top: 9px;
   width: 195px;
+  background-color: #cecece;
+  border: 1px solid #ccc; 
 }
 
 .date-inputs #startDate {
@@ -326,12 +328,16 @@ const setupPagination = () => {
   padding: 5px;
   width: 195px;
   text-align: center;
+  background-color: #ffffff;
+  border: 1px solid #ccc; 
 }
 
 .input-description {
   width: 420px; /* 원하는 너비로 조절 */
   margin-top: 30px;
   text-align: center;
+  background-color: #f0f0f0;
+  border: 1px solid #ccc; 
 }
 
 .container {
@@ -416,9 +422,8 @@ input[type="date"] {
 
 .history-list tbody tr:hover,
 .history-list tbody tr:hover td {
-  background-color: #f0f0f0 !important;
+  background-color: #ffbb002f !important;
   cursor: pointer;
-  border-radius: 5px;
 }
 
 .history-list table {
@@ -451,7 +456,7 @@ input[type="date"] {
 }
 
 .history-list td {
-  background-color: #f1f1f1;
+  background-color: #f8f8f8;
 }
 
 .history-list td.date {
