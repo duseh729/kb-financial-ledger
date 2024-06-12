@@ -34,8 +34,8 @@
               <span :class="{ today: isToday(date) }" :style="{ color: dateIndex === 0 ? 'red' : dateIndex === 6 ? 'blue' : 'inherit' }">{{ date[0] }}</span>
             </div>
             <div style="position: absolute; right: 0px">
-              <span v-show="getIncome(date)" :style="`color:red`">+{{ getIncome(date) }}</span
-              ><br /><span v-show="getExpense(date)" :style="`color:blue`">-{{ getExpense(date) }}</span>
+              <span v-show="getIncome(date) && !date[1]" :style="`color:red`">+{{ getIncome(date) }}</span
+              ><br /><span v-show="getExpense(date) && !date[1]" :style="`color:blue`">-{{ getExpense(date) }}</span>
             </div>
           </td>
         </tr>

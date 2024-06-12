@@ -5,7 +5,7 @@
       <Calendar :financialLedgerData="financialLedgerData" :today="today" :year="year" :month="month" :date="date" :yearChange="yearChange" :monthChange="monthChange" :dateChange="dateChange" />
       <div style="position: relative; top: 39px">
         <AssetStatus :financialLedgerData="financialLedgerData" :year="year" :month="month" />
-        <MemoForm :year="year" :month="month" :date="date" />
+        <MemoForm :year="year" :month="month" :date="date" :financialLedgerData="financialLedgerData"/>
       </div>
     </div>
   </div>
