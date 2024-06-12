@@ -69,7 +69,7 @@ onMounted(async () => {
       };
     }
   }
-  console.log(financialLedgerData.value);
+  // console.log(financialLedgerData.value);
 });
 
 </script>

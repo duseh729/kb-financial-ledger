@@ -16,6 +16,7 @@
           <!-- 요일 출력 -->
         </tr>
       </thead>
+
       <tbody>
         <tr v-for="(week, weekIndex) in weeks" :key="weekIndex">
           <td
@@ -24,12 +25,18 @@
             :class="{ today: isToday(date), 'prev-or-next-month': isPrevOrNextMonth(date) }"
             class="date"
             :style="{
-              color: dateIndex === 0 ? 'red' : dateIndex === 6 ? 'blue' : 'inherit',
               backgroundColor: date[1] ? '#eee' : 'inherit',
             }"
+            style="position: relative"
             @click="pickDate({ date: date[0], monthValue: date[2] })"
           >
-            <span :class="{ today: isToday(date) }">{{ date[0] }}</span>
+            <div style="position: absolute; top: 6px; left: 6px">
+              <span :class="{ today: isToday(date) }" :style="{ color: dateIndex === 0 ? 'red' : dateIndex === 6 ? 'blue' : 'inherit' }">{{ date[0] }}</span>
+            </div>
+            <div style="position: absolute; right: 0px">
+              <span v-show="getIncome(date)" :style="`color:red`">+{{ getIncome(date) }}</span
+              ><br /><span v-show="getExpense(date)" :style="`color:blue`">-{{ getExpense(date) }}</span>
+            </div>
           </td>
         </tr>
       </tbody>
@@ -43,9 +50,9 @@ import { defineProps } from "vue";
 
 // Props 정의
 const props = defineProps({
-  financialLedgerData:{
+  financialLedgerData: {
     type: Object,
-    required: true
+    required: true,
   },
   today: {
     type: Object,
@@ -215,6 +222,59 @@ onMounted(() => {
   getDates();
 });
 
+const income = ref({});
+const expense = ref({});
+
+// 캘린더 날짜에 대한 수입을 가져오는 함수
+const getIncome = date => {
+  // 해당 월에 아무 값도 없으면 리턴
+  // console.log(income.value)
+  if (income.value === undefined) {
+    return;
+  }
+  const year = props.year;
+  const month = String(props.month + 1).padStart(2, "0");
+  const day = String(date[0]).padStart(2, "0");
+  // console.log(year, month, day);
+  // console.log(income.value[day]);
+  // console.log(income.value[day]!==undefined && income.value[day].amount)
+  return income.value[day] !== undefined ? income.value[day].amount.toLocaleString('ko-KR') : false;
+};
+
+// 캘린더 날짜에 대한 지출을 가져오는 함수
+const getExpense = date => {
+  // console.log(expense.value)
+  if (expense.value === undefined) {
+    return;
+  }
+  const year = props.year;
+  const month = String(props.month + 1).padStart(2, "0");
+  const day = String(date[0]).padStart(2, "0");
+  return expense.value[day] !== undefined ? expense.value[day].amount.toLocaleString('ko-KR') : false;
+};
+
+watch(
+  () => [props.financialLedgerData, props.year, props.month],
+  newValue => {
+    income.value = {}
+    expense.value = {}
+    // console.log(newValue);
+    if (newValue[0][props.year] !== undefined) {
+      const temp = newValue[0][props.year][String(props.month + 1).padStart(2, "0")];
+      for (let i in temp) {
+        // console.log(temp[i].type)
+        if (temp[i].type === "income") {
+          income.value[i] = temp[i];
+        } else if (temp[i].type === "expense") {
+          // console.log("expense임")
+          expense.value[i] = temp[i];
+        }
+      }
+    }
+    // console.log(income.value);
+  },
+  { immediate: true, deep: true }
+);
 // props가 변경될 때마다 getDates 함수 호출
 watch(() => [props.year, props.month], getDates);
 </script>
