@@ -1,5 +1,5 @@
 {
-  "temp": [
+  "data": [
     {
       "date": "2024-06-10",
       "asset": "카드",
@@ -19,14 +19,6 @@
     },
     {
       "date": "2024-06-10",
-      "asset": "카드",
-      "category": "쇼핑",
-      "amount": 1500000,
-      "description": "아이패드 구매",
-      "type": "expense"
-    },
-    {
-      "date": "2024-06-30",
       "asset": "카드",
       "category": "쇼핑",
       "amount": 1500000,
@@ -176,30 +168,55 @@
       "type": "income"
     },
     {
-      "id": "163d",
-      "date": "2024-06-10",
-      "asset": "card",
-      "category": "dsaasd",
-      "amount": 25555,
-      "description": "asd",
+      "date": "2024-06-30",
+      "asset": "카드",
+      "category": "쇼핑",
+      "amount": 1500000,
+      "description": "아이패드 구매",
+      "type": "expense"
+    },
+    {
+      "id": "2b18",
+      "date": "2024-06-30",
+      "asset": "cash",
+      "category": "월급",
+      "amount": 1600000,
+      "description": "로또",
       "type": "income"
     },
     {
-      "id": "be51",
-      "date": "2024-06-10",
-      "asset": "card",
-      "category": "dsaasd",
-      "amount": 25555,
-      "description": "asd",
+      "date": "2024-06-30",
+      "asset": "카드",
+      "category": "쇼핑",
+      "amount": 3333,
+      "description": "분실",
+      "type": "expense"
+    },
+    {
+      "id": "2b18",
+      "date": "2024-06-30",
+      "asset": "cash",
+      "category": "월급",
+      "amount": 3333,
+      "description": "주움",
       "type": "income"
     },
     {
-      "id": "376a",
-      "date": "2024-06-10",
-      "asset": "card",
-      "category": "dsaasd",
-      "amount": 25555,
-      "description": "asd",
+      "id": "2b18",
+      "date": "2025-06-30",
+      "asset": "cash",
+      "category": "월급",
+      "amount": 3333,
+      "description": "주움",
+      "type": "income"
+    },
+    {
+      "id": "2b18",
+      "date": "2023-06-30",
+      "asset": "cash",
+      "category": "월급",
+      "amount": 3333,
+      "description": "주움",
       "type": "income"
     }
   ]

@@ -139,7 +139,7 @@ const selectedDescription = ref('')
 
 const loadHistorys = async() => {
   try {
-    const response = await axios.get('http://localhost:3000/temp')
+    const response = await axios.get('http://localhost:3001/data')
     historys.value = response.data
     filterHistorysByMonth()
   } catch(error) {
