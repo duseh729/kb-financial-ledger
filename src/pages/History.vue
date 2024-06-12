@@ -1,83 +1,77 @@
-<!-- 내역 페이지 -->
-<template lang="">
+<template>
   <div>
     <div class="month-selector">
-      <select id="month" v-model="selectedMonth" @change="filterHistorysByMonth" class="month-dropdown">
+      <select id="month" v-model="selectedMonth" @change="filterHistorysByMonth">
         <option v-for="month in months" :key="month.value" :value="month.value">
           {{ month.label }}
         </option>
       </select>
     </div>
+  </div>
 
-    <div class="additional-filters">
-      <input type="date" v-model="filterDate" @change="filterHistorys" placeholder="날짜 선택">
-      <select v-model="filterAsset" @change="filterHistorys">
-        <option value="">자산 종류</option>
-        <option v-for="asset in assets" :key="asset" :value="asset">{{ asset }}</option>
-      </select>
-      <select v-model="filterCategory" @change="filterHistorys">
-        <option value="">분류 종류</option>
-        <option v-for="category in categories" :key="category" :value="category">{{ category }}</option>
-      </select>
-      <select v-model="filterType" @change="filterHistorys">
-        <option value="">수입/지출/이체</option>
-        <option value="income">수입</option>
-        <option value="expense">지출</option>
-        <option value="transfer">이체</option>
-      </select>
-    </div>
+  <div class="main-container">
+    <div class="container-left">
+      <div class="summary">
+        <table class="summary-table">
+          <thead>
+            <tr>
+              <th class="sb1">전체</th>
+              <th>수입</th>
+              <th>지출</th>
+              <th class="sb2">이체</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="balance">{{ totalBalance }} 원</td>
+              <td class="income">{{ formattedTotalIncome }} 원</td>
+              <td class="expense">{{ formattedTotalExpense }} 원</td>
+              <td class="transfer">{{ formattedTotalTransfer }} 원</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
 
-    <div class="summary">
-      <table class="summary-table">
-        <thead>
-          <tr>
-            <th class="sb1">전체</th>
-            <th>수입</th>
-            <th>지출</th>
-            <th class="sb2">이체</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td class="balance">{{ totalBalance }} 원</td>
-            <td class="income">{{ formattedTotalIncome }} 원</td>
-            <td class="expense">{{ formattedTotalExpense }} 원</td>
-            <td class="transfer">{{ formattedTotalTransfer }} 원</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    
-    <div class="history-list">
-      <table>
-        <thead>
-          <tr>
-            <th class="hb1">날짜</th>
-            <th>자산</th>
-            <th>분류</th>
-            <th>금액</th>
-            <th class="hb2">내용</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="(history, index) in paginatedHistorys" :key="index">
-            <td>{{ history.date }}</td>
-            <td>{{ history.asset }}</td>
-            <td>{{ history.category }}</td>
-            <td :class="history.type">{{ new Intl.NumberFormat().format(history.amount) }} 원</td>
-            <td>{{ history.description }}</td>
-          </tr>
-        </tbody>
-      </table>
+      <div class="history-list">
+        <table>
+          <thead>
+            <tr>
+              <th class="hb1">날짜</th>
+              <th>자산</th>
+              <th>분류</th>
+              <th>금액</th>
+              <th class="hb2">내용</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="(history, index) in paginatedHistorys" :key="index">
+              <td>{{ history.date }}</td>
+              <td>{{ history.asset }}</td>
+              <td>{{ history.category }}</td>
+              <td :class="history.type">{{ new Intl.NumberFormat().format(history.amount) }} 원</td>
+              <td>{{ history.description }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
       <div class="pagination">
-        <button @click="prevPage" :disabled="currentPage === 1">이전</button>
-        <span>{{ currentPage }} / {{ totalPages }}</span>
-        <button @click="nextPage" :disabled="currentPage === totalPages">다음</button>
+          <button @click="prevPage" :disabled="currentPage === 1">이전</button>
+          <span>{{ currentPage }} / {{ totalPages }}</span>
+          <button @click="nextPage" :disabled="currentPage === totalPages">다음</button>
       </div>
     </div>
-    
+
+    <!-- 날짜 필터링 기능 -->
+    <div class="container-right">
+      <div class="date-inputs">
+        <input type="date" id="startDate" v-model="startDate" @change="filterHistorysByDateRange" />
+        <input type="date" id="endDate" v-model="endDate" @change="filterHistorysByDateRange" />
+      </div>
+    </div>
   </div>
 </template>
+
 
 <script setup>
 import { ref, computed, onMounted } from 'vue'
@@ -112,6 +106,9 @@ const generateMonths = () => {
 }
 
 const selectedMonth = ref(getCurrentMonth())
+const startDate = ref('')
+const endDate = ref('')
+
 const months = ref(generateMonths())
 const historys = ref([])
 const filteredHistorys = ref([])
@@ -132,6 +129,31 @@ const filterHistorysByMonth = () => {
   )
   setupPagination()
 }
+
+
+/* 날짜 별 필터링 기능 */
+const filterHistorysByDateRange = () => {
+  const start = new Date(startDate.value)
+  const end = new Date(endDate.value)
+  if (start && end) {
+    filteredHistorys.value = historys.value.filter(history => {
+      const historyDate = new Date(history.date)
+      return historyDate >= start && historyDate <= end
+    })
+  } else if (start) {
+    filteredHistorys.value = historys.value.filter(history =>
+      new Date(history.date) >= start
+    )
+  } else if (end) {
+    filteredHistorys.value = historys.value.filter(history =>
+      new Date(history.date) <= end
+    )
+  } else {
+    filterHistorysByMonth()
+  }
+  setupPagination()
+}
+
 
 onMounted(() => {
   loadHistorys()
@@ -193,37 +215,66 @@ const setupPagination = () => {
 </script>
 
 <style scoped>
-.tracker {
-  width: 100%;
+/* 전체 레이아웃 */
+.main-container {
   display: flex;
   justify-content: space-between;
-  background-color: #f8f8f8;
-  padding: 50px;
-  border-radius: 10px;
+}
+
+.container-left {
+  flex: 3;
+}
+
+.container-right {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.date-inputs {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.date-inputs input[type="date"] {
+  margin: 10px 0;
+}
+
+/* 나머지 스타일들 그대로 유지 */
+.container {
+  margin-left: 50px;
+  padding: 0;
 }
 
 .month-selector {
-  display: flex;
-  align-items: center;
-  margin-bottom: 20px;
-  margin: 25px 0 25px 50px;
-  width: 170px;
-  padding: 0;
+  margin-top: 20px;
 }
 
 .month-selector select {
   font-size: 22px;
   font-weight: bold;
-  text-align: center;
   border: none;
   border-radius: 5px;
   outline: none;
   background-color: #fff;
+  text-align: center;
+  width: 170px;
+  margin-left: 40px;
 }
 
-.month-dropdown:hover,
-.month-dropdown:focus {
-  border-color: #555;
+input[type="date"] {
+  font-size: 18px;
+  border: none;
+  border-radius: 5px;
+  outline: none;
+  background-color: #d8d8d8;
+  padding: 5px;
+  margin-right: 10px;
+  text-align: center;
+  width: 160px;
 }
 
 /* 요약 테이블 스타일 */
@@ -310,7 +361,7 @@ const setupPagination = () => {
 }
 
 .history-list td {
-  background-color: #fff;
+  background-color: #f1f1f1;
 }
 
 .history-list td.date {
@@ -362,30 +413,5 @@ const setupPagination = () => {
 .pagination span {
   font-size: 16px;
   margin: 0 10px;
-}
-
-/* 필터링 검색 기능 */
-.filter-section {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  margin: 25px 50px;
-}
-
-.additional-filters {
-  display: flex;
-  flex-direction: row;
-  gap: 10px;
-  margin: 0 50px 0 50px;
-  width: 100%;
-}
-
-.additional-filters input,
-.additional-filters select {
-  padding: 5px;
-  font-size: 16px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  flex: 1;
 }
 </style>
