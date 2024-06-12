@@ -2,15 +2,15 @@
   <div>
     <div>
       <div class="title">전체</div>
-      <p class="value">{{income - expense}}원</p>
+      <p class="value">{{(income - expense).toLocaleString('ko-KR')}}원</p>
     </div>
     <div>
       <div class="title">수입</div>
-      <p class="value" style="color: blue">{{income}}원</p>
+      <p class="value" style="color: red">{{income.toLocaleString('ko-KR')}}원</p>
     </div>
     <div>
       <div class="title">지출</div>
-      <p class="value" style="color: red">{{expense}}원</p>
+      <p class="value" style="color: blue">{{expense.toLocaleString('ko-KR')}}원</p>
     </div>
     <div>
       <div class="title">이체</div>
@@ -46,7 +46,7 @@ const updateIncomeExpense = () => {
 
   const yearData = props.financialLedgerData[props.year];
   if (yearData) {
-    const monthData = yearData[String(props.month).padStart(2, '0')];
+    const monthData = yearData[String(props.month+1).padStart(2, '0')];
     if (monthData) {
       for (const [key, value] of Object.entries(monthData)) {
         if (value.type === 'income') {
