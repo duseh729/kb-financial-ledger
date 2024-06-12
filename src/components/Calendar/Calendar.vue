@@ -43,7 +43,7 @@ import { defineProps } from "vue";
 
 // Props 정의
 const props = defineProps({
-  financialLedgerData:{
+  financialLedgerData: {
     type: Object,
     required: true
   },

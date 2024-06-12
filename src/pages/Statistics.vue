@@ -2,7 +2,8 @@
 <template>
   <div>
     <div class="dropdown">
-      <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown"
+        aria-haspopup="true" aria-expanded="false">
         2024년 6월
       </button>
       <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
@@ -26,6 +27,6 @@
 import MonthlyChart from "../components/Statistics/MonthlyChart.vue";
 import DetailChart from "../components/Statistics/DetailChart.vue";
 </script>
-<style >
+<style>
 @import url("../assets/css/Statistics/chart.css");
 </style>
