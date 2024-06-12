@@ -1,50 +1,62 @@
 <template>
-  <div>
+  <div v-if=" Object.keys(groupedData).length > 0"class="container">
     <div class="monthlyChartWrapper">
-      <Doughnut id="my-chart-id" :options="chartOptions" :data="chartData" />
+      <Doughnut id="my-chart-id" :options="chartOptions" :data="chartData" :key="forceRerender"/>
     </div>
-    {{props.title}}
+    <ChartIndex :title="props.title" :data="props.data"/>
+  </div>
+  <div v-else>
+    <Doughnut id="skeleton-chart" :options="chartOptions" :data="skeletonData" :key="forceRerender"/>
   </div>
 </template>
 <script setup>
-import { Doughnut, Pie } from "vue-chartjs";
+import { Doughnut } from "vue-chartjs";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
-import DetailChart from "./DetailChart.vue";
-import { ref, toRef } from "vue";
+import ChartIndex from "./ChartIndex.vue";
+import { ref, toRef, unref, computed, onMounted, watch, reactive } from "vue";
+import { getChartColors } from './util/ChartColorPallete';
 ChartJS.register(ArcElement, Tooltip, Legend);
-const props = defineProps(['title'])
-const category = ref("");
 
-const handleClick = (evt, item, legend) => {
-  category.value = item.text;
-};
-const chartData = ref({
-  labels: ["식비", "교통비", "취미", "기타"],
+const props = defineProps({ title: String, data: Array })
+const forceRerender = ref(0);
 
+const groupedData = computed(() => groupByCategory(props.data));
+const categoryArr = computed(() => Object.keys(groupedData.value))
+const amountArr = computed(() => Object.values(groupedData.value));
+
+const chartData = reactive({
+  labels: categoryArr,
   datasets: [
     {
-      backgroundColor: ["#41B883", "#E46651", "#00D8FF", "#DD1B16"],
-      data: [40, 20, 80, 10],
+      backgroundColor: [],
+      data: amountArr,
     },
   ],
 });
-const chartOptions = ref({
+
+const skeletonData = reactive({
+  labels: ['없음'],
+  datasets: [
+    {
+      backgroundColor: ['#dee2e6'],
+      data: [1],
+    },
+  ],
+});
+
+const chartOptions = reactive({
   responsive: true,
   plugins: {
     legend: {
-      position: "right",
       labels: {
         font: {
-          lineHeight: 10,
-          family: "Arial",
-          size: 15,
+          size: 0,
         },
       },
-      onClick: handleClick,
     },
     title: {
       display: true,
-      text: toRef(props.title),
+      text: props.title,
       margin: {
         left: 100,
       },
@@ -54,5 +66,31 @@ const chartOptions = ref({
     },
   },
 });
+
+const groupByCategory = (data) => {
+    if (!data || !Array.isArray(data)) {
+      return {};
+    }
+    return data.reduce((acc, item) => {
+        if (!acc[item.category]) {
+            acc[item.category] = 0;
+        }
+        acc[item.category] += item.amount;
+        return acc;
+    }, {});
+};
+
+watch(amountArr, () => {
+  chartData.datasets[0].data = amountArr;
+  forceRerender.value++;
+})
+
+watch(categoryArr, () => {
+  chartData.labels = categoryArr;
+  chartData.datasets[0].backgroundColor = getChartColors(categoryArr.value.length);
+  forceRerender.value++;
+})
+
+
 </script>
 <style></style>
