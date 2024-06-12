@@ -2,25 +2,21 @@
   <div>
     <div>
       <div class="title">전체</div>
-      <p class="value">{{(income - expense).toLocaleString('ko-KR')}}원</p>
+      <p class="value">{{ (income - expense).toLocaleString("ko-KR") }}원</p>
     </div>
     <div>
       <div class="title">수입</div>
-      <p class="value" style="color: red">{{income.toLocaleString('ko-KR')}}원</p>
+      <p class="value" style="color: red">{{ income.toLocaleString("ko-KR") }}원</p>
     </div>
     <div>
       <div class="title">지출</div>
-      <p class="value" style="color: blue">{{expense.toLocaleString('ko-KR')}}원</p>
-    </div>
-    <div>
-      <div class="title">이체</div>
-      <p class="value" style="color: green">3,300,000원</p>
+      <p class="value" style="color: blue">{{ expense.toLocaleString("ko-KR") }}원</p>
     </div>
   </div>
 </template>
 
 <script setup>
-import { defineProps, ref, watch } from 'vue';
+import { defineProps, ref, watch } from "vue";
 
 const props = defineProps({
   financialLedgerData: {
@@ -46,13 +42,16 @@ const updateIncomeExpense = () => {
 
   const yearData = props.financialLedgerData[props.year];
   if (yearData) {
-    const monthData = yearData[String(props.month+1).padStart(2, '0')];
+    const monthData = yearData[String(props.month + 1).padStart(2, "0")];
     if (monthData) {
       for (const [key, value] of Object.entries(monthData)) {
-        if (value.type === 'income') {
-          income.value += value.amount;
-        } else if (value.type === 'expense') {
-          expense.value += value.amount;
+        // console.log(value);
+        for (let i of value) {
+          if (i.type === "income") {
+            income.value += i.amount;
+          } else if (i.type === "expense") {
+            expense.value += i.amount;
+          }
         }
       }
     }

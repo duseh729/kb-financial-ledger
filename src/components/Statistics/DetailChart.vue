@@ -2,7 +2,7 @@
     <Line id="my-chart-id" :options="chartOptions" :data="chartData" :key="forceRerender"/>
 </template>
 <script setup>
-import { ref, computed, watch, onMounted } from "vue";
+import { ref, computed, watch, onMounted, onUpdated, reactive } from "vue";
 import { Line } from "vue-chartjs";
 import {
   Chart as ChartJS,
@@ -27,45 +27,28 @@ ChartJS.register(
 
 const props = defineProps({prevMonthData : Array, curMonthData : Array})
 const forceRerender  = ref(0);
-const prevChartPoints = ref([])
-const curChartPoints = ref([])
-onMounted( async() =>{
-  props.prevMonthData.sort((o1, o2) => o1.day - o2.day)
-  props.curMonthData.sort((o1, o2) => o1.day - o2.day)
-  
-})
+const prevChartPoints = reactive([])
+const curChartPoints = reactive([])
 
-watch(props.curMonth, () => {
-  chartData.value.datasets[0].data = props.curMonth;
-  forceRerender.value++;
-})
-
-watch(props.prevMonth, () => {
-  chartData.value.datasets[1].data = props.prevMonth;
-  forceRerender.value++;
-})
-
-const chartData = ref({
+const chartData = reactive({
   labels: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31],
   datasets: [
     {
       label: "현재 사용량",
       borderColor: "#f87979",
       backgroundColor: "#f87979",
-      //날짜값
-      data: [40, 39, 10, 40, 39, 80, 40, 10, 11,1,1,1,1,1,1,1,1,1],
+      data: [],
     },
     {
       label: '전월 사용량',
-      data: [10, 20, 30, 40, 50, 80, 40, 10, 11,1,1,1,1,1,1,1,1,1],
       borderColor: "#OA5C36",
       backgroundColor: "#OA5C36",
-      yAxisID: 'y1',
+      data: [],
     }
   ],
   
 });
-const chartOptions = ref({
+const chartOptions = reactive({
   responsive: true,
   maintainAspectRatio: false,
   plugins: {
@@ -85,5 +68,37 @@ const chartOptions = ref({
     },
   },
 });
+
+onUpdated(() =>{
+  props.prevMonthData?.sort((o1, o2) => o1.day - o2.day)
+  props.curMonthData?.sort((o1, o2) => o1.day - o2.day)
+  Object.assign(prevChartPoints, generateAmountUsagePoint(props.prevMonthData != null ? props.prevMonthData : []))
+  Object.assign(curChartPoints, generateAmountUsagePoint(props.curMonthData != null ? props.curMonthData : []))
+})
+
+const generateAmountUsagePoint = (data) =>{
+  if(data == undefined || data == null)
+    return;
+  let sum = 0;
+  let cur = 0;
+  const sumArr = [];
+  for(let i = 1; i <= 31; i++){
+    while(cur < data.length && i == data[cur].day){
+      sum += data[cur++].amount;
+    }
+    sumArr.push(sum)
+  }
+  return sumArr;
+} 
+
+watch(curChartPoints, () => {
+  chartData.datasets[0].data = curChartPoints;
+})
+
+watch(prevChartPoints, () => {
+  chartData.datasets[1].data = prevChartPoints;
+  forceRerender.value++;
+})
+
 </script>
 <style></style>
