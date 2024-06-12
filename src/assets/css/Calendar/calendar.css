@@ -1,0 +1,39 @@
+table td,
+table th {
+  width: 200px;
+}
+
+.day {
+  background-color: #eee;
+  border: 1px solid #b1b1b1;
+}
+
+.date {
+  height: 110px;
+  /* paddings: 6px; */
+  border: 1px solid #b1b1b1;
+  cursor: pointer;
+}
+
+.today {
+  background-color: tomato;
+  border-radius: 50%;
+  padding: 3px;
+}
+
+.calendar-move-button {
+  display: inline-block;
+  width: 30px;
+  background-color: white;
+  border: 1px solid #d5d5d5;
+  /* color: #b1b1b1; */
+  /* padding: 6px; */
+}
+.calendar-move-button:first-child {
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+}
+.calendar-move-button:last-child {
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+}

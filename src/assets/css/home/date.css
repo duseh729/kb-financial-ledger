@@ -3,19 +3,19 @@
 } */
 
 .day {
-  background-color: #eee;
-  border: 1px solid #b1b1b1;
+    background-color: #eee;
+    border: 1px solid #b1b1b1;
 }
 
 .date {
-  height: 120px;
-  /* paddings: 6px; */
-  border: 1px solid #b1b1b1;
-  cursor: pointer;
+    height: 120px;
+    /* paddings: 6px; */
+    border: 1px solid #b1b1b1;
+    cursor: pointer;
 }
 
-.today{
-  background-color: tomato;
-  border-radius: 50%;
-  padding: 4px;
+.today {
+    background-color: tomato;
+    border-radius: 50%;
+    padding: 4px;
 }
