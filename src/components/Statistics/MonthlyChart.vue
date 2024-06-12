@@ -82,7 +82,6 @@ const groupByCategory = (data) => {
 
 watch(amountArr, () => {
   chartData.datasets[0].data = amountArr;
-  console.log(amountArr);
   forceRerender.value++;
 })
 
