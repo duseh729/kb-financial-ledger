@@ -192,6 +192,15 @@
       "amount": 25555,
       "description": "asd",
       "type": "income"
+    },
+    {
+      "id": "376a",
+      "date": "2024-06-10",
+      "asset": "card",
+      "category": "dsaasd",
+      "amount": 25555,
+      "description": "asd",
+      "type": "income"
     }
   ]
 }
