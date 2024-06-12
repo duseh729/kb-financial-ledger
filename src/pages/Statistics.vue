@@ -1,8 +1,8 @@
 <!-- 통계 페이지 -->
 <template>
-  <div>
+  <div class="statisticsContainer">
     <div class="dropdown">
-      <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+      <button class="btn btn-secondary dropdown-toggle custom-dropdown-btn" type="button" data-bs-toggle="dropdown" aria-expanded="false">
         {{curDate}}
       </button>
       <ul class="dropdown-menu">
@@ -25,7 +25,7 @@
       </ul>
     </div>
 
-    <div class="wrapper">
+    <div class="contentWrapper">
       <div class="chartWrapper">
         <MonthlyChart class="monthlyChartWrapper" title="수입" :data="mappedIncome[curDate]" />
         <MonthlyChart class="monthlyChartWrapper" title="지출" :data="mappedExpense[curDate] " />

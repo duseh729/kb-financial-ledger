@@ -1,11 +1,40 @@
 
+
+.statisticsContainer{
+  display: flex; 
+  flex-direction: column;
+}
+
 .container{
   display: flex; 
 }
 
+.contentWrapper{
+  display: flex;
+  flex-grow: 1;
+}
+.dropdown{
+  padding: 50px;
+}
+
+.custom-dropdown-btn{
+  background-color: white !important;
+  color: black !important;
+  border: 1px solid #fff !important;
+  font-size: 24px !important;
+  font-weight: bold !important;
+}
 
 .category{
-  list-style-type: none;
+  font-size: 20px;
+  font-weight: bolder;
+}
+
+.categoryElement{
+  padding: 10px;
+}
+.categoryName{
+  padding: 10px;
 }
 
 .circle{
@@ -13,6 +42,10 @@
   width : 30px;
   height : 30px;
   border-radius: 50%;  
+}
+.totalPrice{
+  font-size: 26px;
+  font-weight: bold;
 }
 .monthIndicator{
   text-align: center;
@@ -24,9 +57,7 @@
   margin-top: 100px;
   align-items : center;
 }
-.wrapper{
-  display: flex;
-}
+
 .chartWrapper{
   width: 50%;
 }
