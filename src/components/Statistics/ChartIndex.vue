@@ -1,20 +1,27 @@
 <template>
     <div class="monthlyChartIndex">
         <ul>
-            <li class="category" v-for="(item, index) in groupedData">
+            <li class="category" v-for="(item, index, id) in groupedData">
                 <div v-if="index != 'undefined'">
-                    <div class="circle" style="background-color: aqua;"></div>
-                    <span>{{index}} </span> 
-                    <span>{{item }}</span>
+                    <div class="circle" :style="{ backgroundColor: colors[id] }"></div>
+                    <span>{{ index }} </span>
+                    <span>{{ item }}</span>
                 </div>
             </li>
         </ul>
     </div>
 </template>
 <script setup>
-import { ref, toRef, unref, computed } from "vue";
+import { ref, toRef, unref, computed, reactive, watch, onUpdated } from "vue";
+import { getChartColors } from './util/ChartColorPallete';
+
 const props = defineProps({ title: String, data: Array })
-// console.log(props.data)
+
+const groupedData = computed(() => groupByCategory(props.data));
+const colors = reactive([])
+onUpdated(() =>{
+    Object.assign(colors, getChartColors(Object.keys(groupedData.value).length))
+})
 
 const groupByCategory = (data) => {
     if (!data || !Array.isArray(data)) {
@@ -28,6 +35,5 @@ const groupByCategory = (data) => {
         return acc;
     }, {});
 };
-const groupedData = computed(() => groupByCategory(props.data));
 </script>
 <style></style>

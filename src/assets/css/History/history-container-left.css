@@ -1,0 +1,107 @@
+.container-left {
+    flex: 3;
+    position: relative;
+}
+
+/* 요약 테이블 스타일 */
+.summary {
+    margin-bottom: 20px;
+    margin-left: 50px;
+    margin-right: 50px;
+    flex: 1;
+}
+
+.summary-table th.sb1 {
+    border-bottom-left-radius: 5px;
+    border-top-left-radius: 5px;
+}
+
+.summary-table th.sb2 {
+    border-bottom-right-radius: 5px;
+    border-top-right-radius: 5px;
+}
+
+.summary-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+.summary-table th, .summary-table td {
+    border: 1px solid #ddd none;
+    padding: 5px;
+    margin-left: 50px;
+    text-align: center;
+    background-color: #f8f8f8;
+}
+
+.summary-table td {
+    font-weight: bold;
+}
+
+.summary-table th {
+    background-color: #545045;
+    color: #fff;
+}
+
+/* 내역 테이블 스타일 */
+.history-list {
+    margin-left: 50px;
+    margin-right: 50px;
+}
+
+.history-list tbody tr:hover,
+.history-list tbody tr:hover td {
+    background-color: #ffbb002f !important;
+    cursor: pointer;
+}
+
+.history-list table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    text-align: center;
+}
+
+.history-list th, .history-list td {
+    border: 1px solid #ddd none;
+    padding: 5px;
+    text-align: center;
+}
+
+.history-list th {
+    background-color: #545045;
+    color: #fff;
+    font-size: 16px;
+}
+
+.history-list th.hb1 {
+    border-bottom-left-radius: 5px;
+    border-top-left-radius: 5px;
+}
+
+.history-list th.hb2 {
+    border-bottom-right-radius: 5px;
+    border-top-right-radius: 5px;
+}
+
+.history-list td {
+    background-color: #f8f8f8;
+}
+
+.history-list td.date {
+    width: 20%;
+}
+
+/* 전체/수입/지출 폰트 색상 변경 */
+.history-list .expense, .summary-table td.expense {
+    color: red;
+}
+
+.history-list .income, .summary-table td.income {
+    color: blue;
+}
+
+.history-list .transfer, .summary-table td.transfer {
+    color: green;
+}
