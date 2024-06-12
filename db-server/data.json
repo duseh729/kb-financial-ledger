@@ -26,6 +26,14 @@
       "type": "expense"
     },
     {
+      "date": "2024-06-30",
+      "asset": "카드",
+      "category": "쇼핑",
+      "amount": 1500000,
+      "description": "아이패드 구매",
+      "type": "expense"
+    },
+    {
       "date": "2024-06-10",
       "asset": "카드",
       "category": "식비",
