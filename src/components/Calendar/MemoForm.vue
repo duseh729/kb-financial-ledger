@@ -4,7 +4,7 @@
     <form action="">
       <label for="input-memo">{{ `${year}년 ${month + 1}월 ${date}일` }}</label>
       <input type="text" placeholder="텍스트를 입력하세요." name="input-memo" />
-      <p>{{ getDescription() }}</p>
+      <p v-for="(item, index) in getDescription()" :key="index">{{ item }}</p>
     </form>
   </div>
 </template>
@@ -36,11 +36,20 @@ const getDescription = () => {
   const month = String(props.month + 1).padStart(2, "0");
   const date = String(props.date).padStart(2, "0");
   if (props.financialLedgerData[props.year] !== undefined) {
-    console.log(props.financialLedgerData);
+    // console.log(props.financialLedgerData);
     if (props.financialLedgerData[props.year][month] !== undefined) {
-      // console.log(props.financialLedgerData[props.year][month][date].description)
+      // console.log(props.financialLedgerData[props.year][month])
       if (props.financialLedgerData[props.year][month][date] !== undefined) {
-        return props.financialLedgerData[props.year][month][date].description;
+        // console.log(props.financialLedgerData[props.year][month][date])
+        const memoTemp = []
+        for(let i of props.financialLedgerData[props.year][month][date]){
+          if(memoTemp.length>=3){
+            break;
+            }
+          memoTemp.push(i.description)
+        }
+        // console.log(memoTemp)
+        return memoTemp
       }
     }
   }

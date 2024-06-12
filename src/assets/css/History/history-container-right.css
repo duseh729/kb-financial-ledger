@@ -1,0 +1,84 @@
+.container-right {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    /* align-items: baseline; */
+    align-items: center;
+    margin-right: 50px;
+    height: 150px;
+}
+
+
+/* 날짜 필터링 시스템 */
+.date-inputs {
+    flex: 1;
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+
+.date-inputs input[type="date"] {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    margin-top: 9px;
+    width: 195px;
+    background-color: #cecece;
+    border: 1px solid #ccc; 
+}
+
+input[type="date"] {
+    font-size: 18px;
+    border: none;
+    border-radius: 5px;
+    outline: none;
+    background-color: #d8d8d8;
+    padding: 5px;
+    /* margin-right: 10px; */
+    text-align: center;
+    width: 160px;
+}
+
+.date-inputs #startDate {
+    margin-right: 30px;
+}
+
+/* 자산 및 분류 필터링 시스템 */
+.filters {
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: flex-start;
+    /* align-items: center; */
+    margin-top: 10px;
+}
+
+.filters  #selectedAsset {
+    margin-right: 30px;
+}
+
+.filters select,
+.filters input[type="text"] {
+    font-size: 18px;
+    border: none;
+    border-radius: 5px;
+    outline: none;
+    background-color: #d8d8d8;
+    padding: 5px;
+    width: 195px;
+    text-align: center;
+    background-color: #ffffff;
+    border: 1px solid #ccc; 
+}
+
+/* 내용 필터링 시스템 */
+.input-description {
+    width: 420px; /* 원하는 너비로 조절 */
+    margin-top: 30px;
+    text-align: center;
+    background-color: #f0f0f0;
+    border: 1px solid #ccc; 
+}

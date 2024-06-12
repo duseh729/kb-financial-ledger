@@ -1,0 +1,15 @@
+.month-selector {
+    margin-top: 20px;
+}
+
+.month-selector select {
+    font-size: 22px;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    outline: none;
+    background-color: #fff;
+    text-align: center;
+    width: 170px;
+    margin-left: 40px;
+}
