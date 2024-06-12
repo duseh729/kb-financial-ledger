@@ -1,65 +1,97 @@
-<!-- 내역 페이지 -->
-<template lang="">
+<template>
   <div>
     <div class="month-selector">
-      <select id="month" v-model="selectedMonth" @change="filterHistorysByMonth" class="month-dropdown">
+      <select id="month" v-model="selectedMonth" @change="filterHistorysByMonth">
         <option v-for="month in months" :key="month.value" :value="month.value">
           {{ month.label }}
         </option>
       </select>
     </div>
+  </div>
 
-    <div class="summary">
-      <table class="summary-table">
-        <thead>
-          <tr>
-            <th class="sb1">전체</th>
-            <th>수입</th>
-            <th>지출</th>
-            <th class="sb2">이체</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td class="balance">{{ totalBalance }} 원</td>
-            <td class="income">{{ formattedTotalIncome }} 원</td>
-            <td class="expense">{{ formattedTotalExpense }} 원</td>
-            <td class="transfer">{{ formattedTotalTransfer }} 원</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    
-    <div class="history-list">
-      <table>
-        <thead>
-          <tr>
-            <th class="hb1">날짜</th>
-            <th>자산</th>
-            <th>분류</th>
-            <th>금액</th>
-            <th class="hb2">내용</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="(history, index) in paginatedHistorys" :key="index">
-            <td>{{ history.date }}</td>
-            <td>{{ history.asset }}</td>
-            <td>{{ history.category }}</td>
-            <td :class="history.type">{{ new Intl.NumberFormat().format(history.amount) }} 원</td>
-            <td>{{ history.description }}</td>
-          </tr>
-        </tbody>
-      </table>
+  <div class="main-container">
+    <div class="container-left">
+      <div class="summary">
+        <table class="summary-table" style="table-layout: fixed;">
+          <thead>
+            <tr>
+              <th class="sb1">전체</th>
+              <th>수입</th>
+              <th class="sb2">지출</th>
+              <!-- <th class="sb2">이체</th> -->
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="balance">{{ totalBalance }} 원</td>
+              <td class="income">{{ formattedTotalIncome }} 원</td>
+              <td class="expense">{{ formattedTotalExpense }} 원</td>
+              <!-- <td class="transfer">{{ formattedTotalTransfer }} 원</td> -->
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="history-list">
+        <table>
+          <thead>
+            <tr>
+              <th class="hb1" width="20%">날짜</th>
+              <th width="10%">자산</th>
+              <th width="15%">분류</th>
+              <th width="20%">금액</th>
+              <th class="hb2" width="40%">내용</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="(history, index) in paginatedHistorys" :key="index">
+              <td>{{ history.date }}</td>
+              <td>{{ history.asset }}</td>
+              <td>{{ history.category }}</td>
+              <td :class="history.type">{{ new Intl.NumberFormat().format(history.amount) }} 원</td>
+              <td>{{ history.description }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
       <div class="pagination">
         <button @click="prevPage" :disabled="currentPage === 1">이전</button>
         <span>{{ currentPage }} / {{ totalPages }}</span>
         <button @click="nextPage" :disabled="currentPage === totalPages">다음</button>
       </div>
     </div>
-    
+
+    <!-- 날짜 필터링 기능 -->
+    <div class="container-right">
+      <div class="date-inputs">
+        <input type="date" id="startDate" v-model="startDate" @change="filterHistorysByDateRange" />
+        <input type="date" id="endDate" v-model="endDate" @change="filterHistorysByDateRange" />
+      </div>
+
+      <div class="filters">
+        <select v-model="selectedAsset" id="selectedAsset" @change="filterHistorysByFilters">
+          <option value="">자산 선택</option>
+          <option value="카드">카드</option>
+          <option value="은행">은행</option>
+          <option value="현금">현금</option>
+        </select>
+        
+        <select v-model="selectedCategory" id="selectedCategory" @change="filterHistorysByFilters">
+          <option value="">분류 선택</option>
+          <option value="식비">식비</option>
+          <option value="월급">월급</option>
+          <option value="쇼핑">쇼핑</option>
+          <option value="교육비">교육비</option>
+          <option value="교통비">교통비</option>
+        </select>
+      </div>
+
+      <input type="text" v-model="selectedDescription" placeholder="내용 입력" @input="filterHistorysByFilters" class="input-description" />
+    </div>
   </div>
 </template>
+
 
 <script setup>
 import { ref, computed, onMounted } from 'vue'
@@ -94,13 +126,20 @@ const generateMonths = () => {
 }
 
 const selectedMonth = ref(getCurrentMonth())
+const startDate = ref('')
+const endDate = ref('')
+
 const months = ref(generateMonths())
 const historys = ref([])
 const filteredHistorys = ref([])
 
+const selectedAsset = ref('')
+const selectedCategory = ref('')
+const selectedDescription = ref('')
+
 const loadHistorys = async() => {
   try {
-    const response = await axios.get('http://localhost:3000/temp')
+    const response = await axios.get('http://localhost:3001/data')
     historys.value = response.data
     filterHistorysByMonth()
   } catch(error) {
@@ -114,6 +153,52 @@ const filterHistorysByMonth = () => {
   )
   setupPagination()
 }
+
+
+/* 날짜 별 필터링 기능 */
+const filterHistorysByDateRange = () => {
+  const start = new Date(startDate.value)
+  const end = new Date(endDate.value)
+  if (start && end) {
+    filteredHistorys.value = historys.value.filter(history => {
+      const historyDate = new Date(history.date)
+      return historyDate >= start && historyDate <= end
+    })
+  } else if (start) {
+    filteredHistorys.value = historys.value.filter(history =>
+      new Date(history.date) >= start
+    )
+  } else if (end) {
+    filteredHistorys.value = historys.value.filter(history =>
+      new Date(history.date) <= end
+    )
+  } else {
+    filterHistorysByMonth()
+  }
+  setupPagination()
+}
+
+const filterHistorysByFilters = () => {
+  filterHistorysByDateRange() // 날짜 필터링 먼저 적용
+
+  if (selectedAsset.value) {
+    filteredHistorys.value = filteredHistorys.value.filter(history =>
+      history.asset === selectedAsset.value
+    )
+  }
+  if (selectedCategory.value) {
+    filteredHistorys.value = filteredHistorys.value.filter(history =>
+      history.category === selectedCategory.value
+    )
+  }
+  if (selectedDescription.value) {
+    filteredHistorys.value = filteredHistorys.value.filter(history =>
+      history.description.includes(selectedDescription.value)
+    )
+  }
+  setupPagination()
+}
+
 
 onMounted(() => {
   loadHistorys()
@@ -131,20 +216,20 @@ const totalExpense = computed(() =>
     .reduce((total, history) => total + history.amount, 0)
 )
 
-const totalTransfer = computed(() =>
-  filteredHistorys.value
-    .filter((history) => history.type === 'transfer')
-    .reduce((total, history) => total + history.amount, 0)
-)
+// const totalTransfer = computed(() =>
+//   filteredHistorys.value
+//     .filter((history) => history.type === 'transfer')
+//     .reduce((total, history) => total + history.amount, 0)
+// )
 
 const totalBalance = computed(() => {
-  const balance = totalIncome.value - totalExpense.value - totalTransfer.value
+  const balance = totalIncome.value - totalExpense.value
   return balance.toLocaleString()
 })
 
 const formattedTotalIncome = computed(() => totalIncome.value.toLocaleString())
 const formattedTotalExpense = computed(() => totalExpense.value.toLocaleString())
-const formattedTotalTransfer = computed(() => totalTransfer.value.toLocaleString())
+// const formattedTotalTransfer = computed(() => totalTransfer.value.toLocaleString())
 
 const currentPage = ref(1)
 const perPage = 10
@@ -175,174 +260,9 @@ const setupPagination = () => {
 </script>
 
 <style scoped>
-.tracker {
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  background-color: #f8f8f8;
-  padding: 50px;
-  border-radius: 10px;
-}
-
-.month-selector {
-  display: flex;
-  align-items: center;
-  margin-bottom: 20px;
-  margin: 25px 0 25px 50px;
-  width: 160px;
-  padding: 0;
-}
-
-.month-selector select {
-  font-size: 22px;
-  font-weight: bold;
-  text-align: center;
-  border: none;
-  border-radius: 5px;
-  outline: none;
-  background-color: #fff;
-}
-
-.month-dropdown:hover,
-.month-dropdown:focus {
-  border-color: #555;
-}
-
-/* 요약 테이블 스타일 */
-.summary {
-  margin-bottom: 20px;
-  margin-left: 50px;
-  margin-right: 50px;
-  flex: 1;
-}
-
-.summary-table th.sb1 {
-  border-bottom-left-radius: 5px;
-  border-top-left-radius: 5px;
-}
-
-.summary-table th.sb2 {
-  border-bottom-right-radius: 5px;
-  border-top-right-radius: 5px;
-}
-
-.summary-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 10px;
-}
-
-.summary-table th, .summary-table td {
-  border: 1px solid #ddd none;
-  padding: 5px;
-  margin-left: 50px;
-  text-align: center;
-  background-color: #f8f8f8;
-}
-
-.summary-table td {
-  font-weight: bold;
-}
-
-.summary-table th {
-  background-color: #545045;
-  color: #fff;
-}
-
-/* 내역 테이블 스타일 */
-.history-list {
-  margin-left: 50px;
-  margin-right: 50px;
-}
-
-.history-list tbody tr:hover,
-.history-list tbody tr:hover td {
-  background-color: #f0f0f0 !important;
-  cursor: pointer;
-  border-radius: 5px;
-}
-
-.history-list table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 20px;
-  text-align: center;
-}
-
-.history-list th, .history-list td {
-  border: 1px solid #ddd none;
-  padding: 5px;
-  text-align: center;
-}
-
-.history-list th {
-  background-color: #545045;
-  color: #fff;
-  font-size: 16px;
-}
-
-.history-list th.hb1 {
-  border-bottom-left-radius: 5px;
-  border-top-left-radius: 5px;
-}
-
-.history-list th.hb2 {
-  border-bottom-right-radius: 5px;
-  border-top-right-radius: 5px;
-}
-
-.history-list td {
-  background-color: #fff;
-}
-
-.history-list td.date {
-  width: 20%;
-}
-
-.history-list .expense, .summary-table td.expense {
-  color: red;
-}
-
-.history-list .income, .summary-table td.income {
-  color: blue;
-}
-
-.history-list .transfer, .summary-table td.transfer {
-  color: green;
-}
-
-.pagination {
-  position: fixed;
-  bottom: 50px;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.pagination button {
-  padding: 6px 10px;
-  font-size: 14px;
-  margin: 0 5px;
-  background-color: #3e3e3e;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.pagination button:disabled {
-  background-color: #ddd;
-  cursor: not-allowed;
-}
-
-.pagination button:hover:not(:disabled) {
-  background-color: #2c2c2c;
-}
-
-.pagination span {
-  font-size: 16px;
-  margin: 0 10px;
-}
+@import url("../assets/css/History/history-month-selector.css");
+@import url("../assets/css/History/history-container-right.css");
+@import url("../assets/css/History/history-container-left.css");
+@import url("../assets/css/History/history-pagination.css");
+@import url("../assets/css/History/history.css");
 </style>

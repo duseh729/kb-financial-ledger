@@ -18,7 +18,7 @@ table th {
 .today {
   background-color: tomato;
   border-radius: 50%;
-  padding: 4px;
+  padding: 3px;
 }
 
 .calendar-move-button {
