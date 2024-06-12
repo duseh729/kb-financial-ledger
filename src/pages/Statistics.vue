@@ -28,7 +28,7 @@
     <div class="wrapper">
       <div class="chartWrapper">
         <MonthlyChart class="monthlyChartWrapper" title="수입" :data="mappedIncome[curDate]" />
-        <MonthlyChart class="monthlyChartWrapper" title="지출" :data="mappedExpense[curDate]" />
+        <MonthlyChart class="monthlyChartWrapper" title="지출" :data="mappedExpense[curDate] " />
       </div>
       <div class="detailChartWrapper">
         <DetailChart 
@@ -42,31 +42,46 @@
 </template>
 
 <script setup>
+import axios from "axios";
+import { ref, reactive, onMounted } from "vue";
+
 import MonthlyChart from "../components/Statistics/MonthlyChart.vue";
 import DetailChart from "../components/Statistics/DetailChart.vue";
-import { ref, reactive, onMounted, computed } from "vue";
-import axios from "axios";
 
-const income = ref([])
-const expense = ref([])
+const date = reactive([])
+const curDate = ref()
 const curYearIdx = ref(0);
 const curMonthIdx = ref(0);
-const mappedIncome = ref({});
-const mappedExpense = ref({});
-const date = ref([])
-const curDate = ref()
+const mappedIncome = reactive({});
+const mappedExpense = reactive({});
+
 onMounted(async() =>{  
-  income.value = await requestData("income");
-  expense.value = await requestData("expense");
-  mappedIncome.value = groupByMonth(income.value);
-  mappedExpense.value  = groupByMonth(expense.value);
-  const mergedArr = [...income.value, ...expense.value]
-  date.value = await groupDataByYearAndMonth(mergedArr);
-  curDate.value = date.value[curYearIdx.value]?.year +" "+ date.value[curYearIdx.value]?.month[curMonthIdx.value]
+  const data = await requestData();
+  const {incomeData, expenseData } = classify(data);
+
+  Object.assign(mappedIncome, groupByMonth(incomeData));
+  Object.assign(mappedExpense, groupByMonth(expenseData))
+
+  Object.assign(date, groupDataByYearAndMonth(data));
+  curDate.value = date[curYearIdx.value]?.year +" "+ date[curYearIdx.value]?.month[curMonthIdx.value]
 })
 
+function classify(data) {
+  const expenseData = [];
+  const incomeData = [];
+
+  data.forEach(item => {
+    if (item.type === "expense") {
+      expenseData.push(item);
+    } else if (item.type === "income") {
+      incomeData.push(item);
+    }
+  });
+
+  return {expenseData, incomeData };
+}
 const moveBackward = () => {
-  if(curYearIdx.value == date.value.length - 1)
+  if(curYearIdx.value == date.length - 1)
     return;
 
   curYearIdx.value++
@@ -83,31 +98,33 @@ const moveForward = () => {
 
 const select = (idx) => {
   curMonthIdx.value = idx;
-  curDate.value = date.value[curYearIdx.value]?.year +" "+ date.value[curYearIdx.value]?.month[curMonthIdx.value]
-
+  curDate.value = date[curYearIdx.value]?.year +" "+ date[curYearIdx.value]?.month[curMonthIdx.value]
 }
 
-const requestData = async (api) => {
-  const response = await axios.get(`http://localhost:3001/${api}`)
+const requestData = async () => {
+  const response = await axios.get(`http://localhost:3001/data`)
   return response.data;
 }
 
+
 const isValid = (year, month) => {
-  if(isNaN(year) || isNaN(month))
-      return false;
-  return true;
-}
+  return !isNaN(year) && !isNaN(month) && month >= 1 && month <= 12;
+};
 
 const groupByMonth = (data) => {
   const groupedData = {};
 
   data.forEach((item) => {
-    const date = new Date(parseInt(item.date));
-    if(!isValid(date.getFullYear(), date.getMonth()))
-      return;
-    const yearMonth = `${date.getFullYear()}년 ${date.getMonth() + 1}월`;
-    const day = date.getDate();
+    const dateParts = item.date.split('-');
+    const year = parseInt(dateParts[0]);
+    const month = parseInt(dateParts[1]);
+    const day = parseInt(dateParts[2]);
 
+    if(!isValid(year, month)){
+      return;
+    }
+
+    const yearMonth = `${year}년 ${month}월`;
 
     if (!groupedData[yearMonth]) {
       groupedData[yearMonth] = [];
@@ -125,19 +142,21 @@ const groupByMonth = (data) => {
   return groupedData;
 };
 
-const groupDataByYearAndMonth = async (data) => {
+const groupDataByYearAndMonth = (data) => {
   const result = {};
   data.forEach(item => {
-    const date = new Date(parseInt(item.date));
-    if(!isValid(date.getFullYear(), date.getMonth()))
-      return;
-    const year = `${date.getFullYear()}년`;
-    const month = `${date.getMonth() + 1}월`;
+    const dateParts = item.date.split('-');
+    const year = parseInt(dateParts[0]);
+    const month = parseInt(dateParts[1]);
 
-    if (!result[year]) {
-      result[year] = new Set();
+    if(!isValid(year, month)){
+      return;
     }
-    result[year].add(month);
+
+    if (!result[`${year}년`]) {
+      result[`${year}년`] = new Set();
+    }
+    result[`${year}년`].add(`${month}월`);
   });
 
   return Object.entries(result).map(([year, months]) => ({
@@ -150,21 +169,6 @@ const groupDataByYearAndMonth = async (data) => {
   }));
 };
 
-const formatDate = (unixTimestamp) => {
-  const date = new Date(Number(unixTimestamp));
-  const year = date.getFullYear();
-  const month = ('0' + (date.getMonth() + 1)).slice(-2);
-  const day = ('0' + date.getDate()).slice(-2);
-  return `${year}/${month}/${day}`;
-};
-
-const formattedData = computed(() => {
-  return income.value.map(item => ({
-    ...item,
-    date: formatDate(item.date)
-  }));
-});
-
 const getPreviousMonth = (yearMonth) => {
   if(yearMonth == undefined)
     return '';
@@ -174,7 +178,7 @@ const getPreviousMonth = (yearMonth) => {
   let monthNum = parseInt(month);
 
   if (isNaN(yearNum) || isNaN(monthNum) || monthNum < 1 || monthNum > 12) {
-    throw new Error('Invalid input format. Expected format: "YYYY년 M월".');
+    // throw new Error('Invalid input format. Expected format: "YYYY년 M월".');
   }
 
   // 이전 달 계산
