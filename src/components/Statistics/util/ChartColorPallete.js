@@ -1,7 +1,7 @@
 export function getChartColors(length) {
 
     const colorPalette = [
-        '#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF', '#FF9F40'
+        '#36A2EB', '#4BC0C0', '#FFCD56', '#FF9F40', '#FF6384', '#9966FF'
     ];
     const colors = [];
     for (let i = 0; i < length; i++) {

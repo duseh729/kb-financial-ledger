@@ -1,6 +1,9 @@
 <template>
-    <Line id="my-chart-id" :options="chartOptions" :data="chartData" :key="forceRerender"/>
+    <div class="detailChartWrapper">
+      <Line id="my-chart-id" :options="chartOptions" :data="chartData" :key="forceRerender"/>
+    </div>
 </template>
+
 <script setup>
 import { ref, computed, watch, onMounted, onUpdated, reactive } from "vue";
 import { Line } from "vue-chartjs";
@@ -46,10 +49,9 @@ const chartData = reactive({
       data: [],
     }
   ],
-  
 });
+
 const chartOptions = reactive({
-  responsive: true,
   maintainAspectRatio: false,
   plugins: {
     legend: {
@@ -72,18 +74,16 @@ const chartOptions = reactive({
 onUpdated(() =>{
   props.prevMonthData?.sort((o1, o2) => o1.day - o2.day)
   props.curMonthData?.sort((o1, o2) => o1.day - o2.day)
-  Object.assign(prevChartPoints, generateAmountUsagePoint(props.prevMonthData != null ? props.prevMonthData : []))
-  Object.assign(curChartPoints, generateAmountUsagePoint(props.curMonthData != null ? props.curMonthData : []))
+  Object.assign(prevChartPoints, generateAmountUsagePoint(props.prevMonthData))
+  Object.assign(curChartPoints, generateAmountUsagePoint(props.curMonthData))
 })
 
 const generateAmountUsagePoint = (data) =>{
-  if(data == undefined || data == null)
-    return;
   let sum = 0;
   let cur = 0;
   const sumArr = [];
   for(let i = 1; i <= 31; i++){
-    while(cur < data.length && i == data[cur].day){
+    while(data != undefined && cur < data.length && i == data[cur].day){
       sum += data[cur++].amount;
     }
     sumArr.push(sum)
@@ -93,6 +93,7 @@ const generateAmountUsagePoint = (data) =>{
 
 watch(curChartPoints, () => {
   chartData.datasets[0].data = curChartPoints;
+  forceRerender.value++;
 })
 
 watch(prevChartPoints, () => {

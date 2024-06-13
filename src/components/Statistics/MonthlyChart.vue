@@ -3,7 +3,7 @@
     <div class="monthlyChartWrapper">
       <Doughnut id="my-chart-id" :options="chartOptions" :data="chartData" :key="forceRerender"/>
     </div>
-    <ChartIndex :title="props.title" :data="props.data"/>
+    <ChartIndex :title="props.title" :data="groupedData"/>
   </div>
   <div v-else>
     <Doughnut id="skeleton-chart" :options="chartOptions" :data="skeletonData" :key="forceRerender"/>
@@ -20,9 +20,11 @@ ChartJS.register(ArcElement, Tooltip, Legend);
 const props = defineProps({ title: String, data: Array })
 const forceRerender = ref(0);
 
+
 const groupedData = computed(() => groupByCategory(props.data));
 const categoryArr = computed(() => Object.keys(groupedData.value))
 const amountArr = computed(() => Object.values(groupedData.value));
+
 
 const chartData = reactive({
   labels: categoryArr,
@@ -46,6 +48,7 @@ const skeletonData = reactive({
 
 const chartOptions = reactive({
   responsive: true,
+  maintainAspectRatio: false,
   plugins: {
     legend: {
       labels: {
