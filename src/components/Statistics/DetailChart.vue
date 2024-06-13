@@ -52,12 +52,21 @@ const chartData = reactive({
 });
 
 const chartOptions = reactive({
+  responsive: true,
   maintainAspectRatio: false,
   plugins: {
     legend: {
+      labels: {
+        font: {
+          size: 20
+        }
+      },
       position: "right",
     },
     title: {
+      font:{
+        size: 20
+      },
       display: true,
       text: "전월 지출 비교",
       amrgin: {
@@ -69,6 +78,22 @@ const chartOptions = reactive({
       },
     },
   },
+  scales: {
+    x: {
+      ticks: {
+        font: {
+          size: 20
+        }
+      }
+    },
+    y: {
+      ticks: {
+        font: {
+          size: 20
+        }
+      }
+    }
+  }
 });
 
 onUpdated(() =>{

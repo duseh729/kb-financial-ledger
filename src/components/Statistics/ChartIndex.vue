@@ -2,20 +2,27 @@
     <div class="monthlyChartIndex">
         <div class="totalPrice">
             <span>이번 달 {{ props.title }} 
-                <span :style="lineStyle">{{ totalPrice.toLocaleString() }} 
-                </span>금액</span>
+                <span v-if="totalPrice != 0">
+                    <span :style="lineStyle">{{ totalPrice.toLocaleString() }} </span>
+                    <span>금액</span>
+                </span>
+                <span v-else>
+                    <span>금액 없음</span>
+                </span>
+            </span>
         </div>
+        <br/>
         <table>
             <tr class="category" v-for="(item, index, id) in props.data">
-                <td><div class="circle categoryElement" :style="{ backgroundColor: colors[id] }"></div></td>
-                <td><span class="categoryElement">{{ index }} </span></td>
-                <td><span class="categoryElement">{{ item.toLocaleString() }} 원</span></td>
+                <td><div class="circle" :style="{ backgroundColor: colors[id] }"></div></td>
+                <td><span>{{ index }} </span></td>
+                <td><span>{{ item.toLocaleString() }} 원</span></td>
             </tr>
         </table>
     </div>
 </template>
 <script setup>
-import { ref, toRef, unref, computed, reactive, watch, onUpdated } from "vue";
+import { computed } from "vue";
 import { getChartColors } from './util/ChartColorPallete';
 
 const props = defineProps({ title: String, data: Object})

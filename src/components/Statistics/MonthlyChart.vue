@@ -5,8 +5,11 @@
     </div>
     <ChartIndex :title="props.title" :data="groupedData"/>
   </div>
-  <div v-else>
-    <Doughnut id="skeleton-chart" :options="chartOptions" :data="skeletonData" :key="forceRerender"/>
+  <div v-else class="container">
+    <div class="monthlyChartWrapper">
+      <Doughnut id="skeleton-chart" :options="chartOptions" :data="skeletonData" :key="forceRerender"/>
+    </div>
+    <ChartIndex :title="props.title" :data="groupedData"/>
   </div>
 </template>
 <script setup>
@@ -60,12 +63,13 @@ const chartOptions = reactive({
     title: {
       display: true,
       text: props.title,
-      margin: {
-        left: 100,
+      font: {
+        size: 20,
+        weight: 'bold'
       },
       padding: {
-        top: 60,
-      },
+        top: 30,
+      }
     },
   },
 });
