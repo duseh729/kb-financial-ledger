@@ -9,7 +9,7 @@
           <router-link to="/asset" style="text-decoration: none"><li ref="asset" class="nav-item cursor-pointer">자산</li></router-link>
           <router-link to="/statistics" style="text-decoration: none"><li ref="statistics" class="nav-item cursor-pointer">통계</li></router-link>
         </ul>
-        <div class="nav-item cursor-pointer">profile</div>
+        <div class="nav-item cursor-pointer">로그인</div>
       </div>
     </nav>
   </div>
@@ -28,31 +28,31 @@ const statistics = ref(null);
 const updateStyles = () => {
   // 초기화
   // console.log(history.value)
-  normalStyle(history.value)
-  normalStyle(calendar.value)
-  normalStyle(asset.value)
-  normalStyle(statistics.value)
+  normalStyle(history.value);
+  normalStyle(calendar.value);
+  normalStyle(asset.value);
+  normalStyle(statistics.value);
 
   // 현재 경로에 따라 스타일 적용
   if (route.fullPath.includes("history")) {
-    visitedStyle(history.value)
+    visitedStyle(history.value);
   } else if (route.fullPath.includes("calendar")) {
-    visitedStyle(calendar.value)
+    visitedStyle(calendar.value);
   } else if (route.fullPath.includes("asset")) {
-    visitedStyle(asset.value)
+    visitedStyle(asset.value);
   } else if (route.fullPath.includes("statistics")) {
-    visitedStyle(statistics.value)
+    visitedStyle(statistics.value);
   }
 };
 
-const normalStyle = (item)=>{
-  item.style.fontWeight = "normal"
+const normalStyle = item => {
+  item.style.fontWeight = "normal";
   // item.style.backgroundColor = "inherit"
-}
-const visitedStyle = (item)=>{
-  item.style.fontWeight = "700"
-  // item.style.backgroundColor = "gray"
-}
+};
+const visitedStyle = item => {
+  item.style.fontWeight = "700";
+  // item.style.backgroundColor = "gray"x
+};
 
 // 컴포넌트가 마운트될 때 스타일 업데이트
 onMounted(updateStyles);
