@@ -8,7 +8,6 @@
           <router-link to="/asset" style="text-decoration: none"><li ref="asset" class="nav-item cursor-pointer">자산</li></router-link>
           <router-link to="/statistics" style="text-decoration: none"><li ref="statistics" class="nav-item cursor-pointer">통계</li></router-link>
         </ul>
-        <div class="nav-item cursor-pointer">로그인</div>
       </div>
     </nav>
   </div>
