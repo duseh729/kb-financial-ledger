@@ -3,6 +3,29 @@
   <div v-if="showModal" class="modal-overlay" @click.self="closeModal">
     <div class="modal-content">
       <div class="income-expense-form">
+        <div class="form-group">
+          <select id="type" v-model="type" required>
+            <option value="income">입력(수입)</option>
+            <option value="expense">입력(지출)</option>
+          </select>
+          <button class="close-button" @click="closeModal">X</button>
+        </div>
+        <div class="form-group">
+          <label for="date">일자</label>
+          <input type="date" id="date" v-model="date" required>
+        </div>
+        <div class="form-group">
+          <label for="asset">자산</label>
+          <select id="asset" v-model="asset" required>
+            <option value="카드">카드</option>
+            <option value="은행">은행</option>
+            <option value="현금">현금</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="category">분류</label>
+          <input type="text" id="category" v-model="category">
+        </div>
         <form @submit.prevent="postData">
           <div class="form-group">
             <select id="type" v-model="type" required>

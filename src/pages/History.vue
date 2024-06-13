@@ -34,8 +34,8 @@
         <table>
           <thead>
             <tr>
-              <th class="hb1" width="7%">선택</th>
-              <th width="15%">날짜</th>
+              <!-- <th class="hb1" width="7%">선택</th> -->
+              <th class="hb1" width="20%">날짜</th>
               <th width="10%">자산</th>
               <th width="15%">분류</th>
               <th width="20%">금액</th>
@@ -43,8 +43,11 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(history, index) in paginatedHistorys" :key="index">
-              <td><input type="checkbox" v-model="selectedHistorys" :value="history.id" /></td>
+            <tr v-for="(history, index) in paginatedHistorys" 
+              :key="index" 
+              @click="selectHistory(history)"
+              :class="{ selected: selectedHistory && selectedHistory.id === history.id }" >
+              <!-- <td><input type="checkbox" v-model="selectedHistorys" :value="history.id" /></td> -->
               <td>{{ history.date }}</td>
               <td>{{ history.asset }}</td>
               <td>{{ history.category }}</td>
@@ -71,7 +74,7 @@
       <div class="filters">
         <select v-model="selectedAsset" id="selectedAsset" @change="filterHistorysByFilters">
           <option value="">자산 선택</option>
-          <option value="카드">카드</option>
+          <!-- <option value="카드">카드</option> -->
           <option value="은행">은행</option>
           <option value="현금">현금</option>
         </select>
@@ -88,7 +91,45 @@
 
       <input type="text" v-model="selectedDescription" placeholder="내용 입력" @input="filterHistorysByFilters" class="input-description" />
 
-      <button @click="deleteSelectedHistorys" class="delete-button">삭제</button>
+      <div v-if="selectedHistory" class="detail-container">
+        <h2>내역 상세</h2>
+        <div class="detail-inputs">
+          <label>날짜</label><br>
+          <input type="date" v-model="selectedHistory.date" id="detail-date" />
+
+          <div class="detail-category-name">
+            <label id="asset-name">자산</label>
+            <label id="category-name">분류</label>
+          </div>
+
+          <div class="detail-inputs-asset-category">
+            <select v-model="selectedHistory.asset" id="detailAsset">
+              <!-- <option value="">자산 선택</option> -->
+        
+              <option value="은행">은행</option>
+              <option value="현금">현금</option>
+            </select>
+            <select v-model="selectedHistory.category" id="detailCategory">
+              <!-- <option value="">분류 선택</option> -->
+              <option value="식비">식비</option>
+              <option value="월급">월급</option>
+              <option value="쇼핑">쇼핑</option>
+              <option value="교육비">교육비</option>
+              <option value="교통비">교통비</option>
+              <option value="교통비">기타</option>
+            </select>
+          </div>
+          <label>금액</label>
+          <input type="number" v-model="selectedHistory.amount" />
+          <label>내용</label>
+          <input type="text" v-model="selectedHistory.description" />
+
+          <div class="detail-button">
+            <button @click="saveChanges" id="detailSave">저장</button>
+            <button @click="deleteSelectedHistory" id="detailDelete">삭제</button>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -133,6 +174,7 @@ const months = ref(generateMonths())
 const historys = ref([])
 const filteredHistorys = ref([])
 const selectedHistorys = ref([]) // Store selected history IDs
+const selectedHistory = ref(null) // Store the selected history
 
 const selectedAsset = ref('')
 const selectedCategory = ref('')
@@ -249,25 +291,36 @@ const setupPagination = () => {
   currentPage.value = 1
 }
 
-/* 삭제 기능 시스템 */
-const deleteSelectedHistorys = async() => {
-  if (selectedHistorys.value.length === 0) {
-    alert('선택된 항목이 없습니다.')
-    return
-  }
+const deleteSelectedHistory = async () => {
+  if (selectedHistory.value) {
+    try {
+      await axios.delete(`http://localhost:3001/data/${selectedHistory.value.id}`)
+      alert('선택된 항목이 삭제되었습니다.');
+      selectedHistorys.value = selectedHistorys.value.filter(id => id !== selectedHistory.value.id)
+      selectedHistory.value = null;
+      loadHistorys();
 
-  try {
-    await Promise.all(
-      selectedHistorys.value.map(async id => {
-        await axios.delete(`http://localhost:3001/data/${id}`)
-      })
-    )
-    alert('선택된 항목이 삭제되었습니다.')
-    selectedHistorys.value = [] 
-    loadHistorys()
-  } catch(error) {
-    console.error('Error deleting historys:', error)
-    alert('항목 삭제에 실패했습니다.')
+    } catch (error) {
+      console.error('Error deleting history:', error)
+      alert('항목 삭제에 실패했습니다.')
+    }
+  }
+}
+
+const selectHistory = (history) => {
+  selectedHistory.value = { ...history } 
+}
+
+const saveChanges = async () => {
+  if (selectedHistory.value) {
+    try {
+      await axios.put(`http://localhost:3001/data/${selectedHistory.value.id}`, selectedHistory.value);
+      alert('변경 사항이 저장되었습니다.')
+      loadHistorys();
+    } catch (error) {
+      console.error('Error saving changes:', error)
+      alert('변경 사항 저장에 실패했습니다.')
+    }
   }
 }
 </script>
@@ -279,4 +332,5 @@ const deleteSelectedHistorys = async() => {
 @import url("../assets/css/History/history-container-left.css");
 @import url("../assets/css/History/history-pagination.css");
 @import url("../assets/css/History/history.css");
+@import url("../assets/css/History/history-detail-view.css");
 </style>

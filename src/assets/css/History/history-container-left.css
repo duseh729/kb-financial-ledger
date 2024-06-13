@@ -52,10 +52,16 @@
     margin-right: 50px;
 }
 
-.history-list tbody tr:hover,
+.history-list tbody tr.selected:focus {
+    background-color: #ffd700; 
+}
+
+.history-list tbody tr:hover {
+    background-color: #ffbb002f; /* hover 색상 */
+}
+
 .history-list tbody tr:hover td {
-    background-color: #ffbb002f !important;
-    cursor: pointer;
+    background-color: #ffbb002f; /* hover 색상 */
 }
 
 .history-list table {
