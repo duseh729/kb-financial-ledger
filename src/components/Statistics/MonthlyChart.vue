@@ -1,12 +1,12 @@
 <template>
-  <div v-if=" Object.keys(groupedData).length > 0"class="container">
-    <div class="monthlyChartWrapper">
+  <div class="doughnutChartWrapper" v-if=" Object.keys(groupedData).length > 0">
+    <div class="doughnutChart">
       <Doughnut id="my-chart-id" :options="chartOptions" :data="chartData" :key="forceRerender"/>
     </div>
     <ChartIndex :title="props.title" :data="groupedData"/>
   </div>
-  <div v-else class="container">
-    <div class="monthlyChartWrapper">
+  <div class="doughnutChartWrapper" v-else>
+    <div class="doughnutChart">
       <Doughnut id="skeleton-chart" :options="chartOptions" :data="skeletonData" :key="forceRerender"/>
     </div>
     <ChartIndex :title="props.title" :data="groupedData"/>
@@ -23,11 +23,9 @@ ChartJS.register(ArcElement, Tooltip, Legend);
 const props = defineProps({ title: String, data: Array })
 const forceRerender = ref(0);
 
-
 const groupedData = computed(() => groupByCategory(props.data));
 const categoryArr = computed(() => Object.keys(groupedData.value))
 const amountArr = computed(() => Object.values(groupedData.value));
-
 
 const chartData = reactive({
   labels: categoryArr,

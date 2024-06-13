@@ -1,5 +1,5 @@
 <template>
-    <div class="monthlyChartIndex">
+    <div class="chartIndex">
         <div class="totalPrice">
             <span>이번 달 {{ props.title }} 
                 <span v-if="totalPrice != 0">

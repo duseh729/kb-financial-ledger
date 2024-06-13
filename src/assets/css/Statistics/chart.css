@@ -1,24 +1,42 @@
-
-
 .statisticsContainer{
   display: flex; 
   flex-direction: column;
 }
 
-.contentWrapper{
+.chartWrapper{
   display: flex;
-  flex-grow: 1;
-  /* flex-flow: column; */
-  flex-wrap: wrap;
+  flex-flow: column wrap;
 }
 
-.container{
-  justify-content: center;
-  display: flex; 
+.incomeChartWrapper{
+  display: flex;
+  flex-flow: row wrap;
 }
 
-.dropdown{
-  padding: 50px;
+.expenseChartWrapper{
+  display: flex;
+  flex-flow: row wrap;
+  padding-top: 50px;
+}
+
+.doughnutChartWrapper{
+  display: flex;
+  flex : 0.8;
+}
+
+.doughnutChart{
+  flex : 1;
+  height: 300px;
+}
+
+.chartIndex{
+  flex : 1;
+  align-items : center;
+}
+
+.lineChart{
+  height: 300px;
+  flex: 1;
 }
 
 .custom-dropdown-btn{
@@ -30,14 +48,28 @@
 }
 
 .category{
+  width: 10px;
   font-size: 20px;
   font-weight: bolder;
   height: 45px;
 }
 
 .category > td{
-  padding: 5px;
+  padding-left: 20px;
   vertical-align: middle;
+  text-align:right 
+}
+
+.category > td:nth-child(1) {
+  width: 30px;
+}
+
+.category > td:nth-child(2) {
+  width: 100px;
+}
+
+.category > td:nth-child(3) {
+  width: 200px;
 }
 
 .categoryName{
@@ -45,41 +77,19 @@
 }
 
 .circle{
-  display: inline-block;
   width : 30px;
   height : 30px;
   border-radius: 50%;  
 }
+
 .totalPrice{
   font-size: 26px;
   font-weight: bold;
 }
+
 .monthIndicator{
-  text-align: center;
-  display: inline-block;
-}
-
-.monthlyChartIndex{
-  width:70%;
-  margin-top: 20px;
-  align-items : center;
-}
-
-.chartWrapper{
-  
-  width: 1100px;
-}
-
-.detailChartWrapper{
-  width: 1000px;
-}
-
-.monthlyChartWrapper{
-
-  width:30%;
-}
-.monthSelector{
-  text-align: center;
+  position: absolute;
+  right: 31%;
 }
 
 .monthButton{
