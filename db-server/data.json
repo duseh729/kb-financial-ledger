@@ -2,33 +2,6 @@
   "data": [
     {
       "date": "2024-06-10",
-      "asset": "카드",
-      "category": "식비",
-      "amount": 10000,
-      "description": "식비 지출",
-      "type": "expense",
-      "id": "82a8"
-    },
-    {
-      "date": "2024-06-10",
-      "asset": "은행",
-      "category": "월급",
-      "amount": 20000,
-      "description": "YES24 반품 비용",
-      "type": "income",
-      "id": "134f"
-    },
-    {
-      "date": "2024-06-10",
-      "asset": "은행",
-      "category": "이체",
-      "amount": 50000,
-      "description": "-",
-      "type": "transfer",
-      "id": "f393"
-    },
-    {
-      "date": "2024-06-10",
       "asset": "은행",
       "category": "월급",
       "amount": 60000,
@@ -114,6 +87,24 @@
       "asset": "cash",
       "category": "월급",
       "amount": 3333,
+      "description": "주움",
+      "type": "income"
+    },
+    {
+      "id": "323e",
+      "date": "2024-06-10",
+      "asset": "현금\r\n              ",
+      "category": "미용비",
+      "amount": 12312,
+      "description": "머리 자름",
+      "type": "expense"
+    },
+    {
+      "id": "9097",
+      "date": "2024-06-10",
+      "asset": "현금\r\n              ",
+      "category": "기타",
+      "amount": 1111,
       "description": "주움",
       "type": "income"
     }
