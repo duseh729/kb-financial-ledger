@@ -9,13 +9,13 @@
         <div @click.stop.prevent class="monthSelector">
           <button class="monthButton" style="float: left;" 
             @click="moveBackward" v-if="curYearIdx != date.length - 1">
-            <
+            <img src="../assets/icon/left-arrow.svg" width=10px alt="left" />
           </button>
           <span v-else class="skeleton"></span>
           <span class="monthIndicator">{{ date[curYearIdx]?.year }}</span>
           <button class="monthButton" style="float: right;"  
             @click="moveForward" v-if="curYearIdx != 0">
-            >
+            <img src="../assets/icon/right-arrow.svg" width=10px alt="right" />
           </button>
           <span v-else class="skeleton"></span>
         </div>

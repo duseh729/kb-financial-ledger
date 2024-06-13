@@ -5,7 +5,7 @@
 </template>
 
 <script setup>
-import { ref, computed, watch, onMounted, onUpdated, reactive } from "vue";
+import { ref, watch,  onUpdated, reactive } from "vue";
 import { Line } from "vue-chartjs";
 import {
   Chart as ChartJS,

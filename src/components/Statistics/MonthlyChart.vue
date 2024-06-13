@@ -16,7 +16,7 @@
 import { Doughnut } from "vue-chartjs";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import ChartIndex from "./ChartIndex.vue";
-import { ref, toRef, unref, computed, onMounted, watch, reactive } from "vue";
+import { ref, computed, watch, reactive } from "vue";
 import { getChartColors } from './util/ChartColorPallete';
 ChartJS.register(ArcElement, Tooltip, Legend);
 
