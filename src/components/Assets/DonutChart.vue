@@ -1,6 +1,6 @@
 <template>
     <div class="donut-chart-container">
-        <h3 style="position: relative;top: 210px; left: 140px;">자산 구성</h3>
+        <h3 style="position: relative;top: 165px; ">자산 구성</h3>
         <canvas id="donutChart"></canvas>
     </div>
 </template>
@@ -58,7 +58,8 @@ export default {
 <style scoped>
 .donut-chart-container {
     width: 100%;
-    max-width: 400px;
+    max-width: 300px;
+    text-align: center;
     margin: 0 auto;
 }
 </style>
