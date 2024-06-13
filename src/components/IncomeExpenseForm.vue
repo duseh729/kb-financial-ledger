@@ -19,8 +19,8 @@
             <label for="asset">자산</label>
             <select id="asset" v-model="asset" required>
               <!-- <option value="card">카드</option> -->
-              <option value="bank">은행</option>
-              <option value="cash">현금</option>
+              <option value="은행">은행</option>
+              <option value="현금">현금</option>
             </select>
           </div>
           <div class="form-group">
