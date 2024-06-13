@@ -48,6 +48,9 @@
 <script setup>
 import { ref, defineProps } from 'vue';
 import axios from 'axios';
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
 
 const props = defineProps({
   showModal: Boolean,
@@ -90,13 +93,15 @@ const postData = () => {
   };
 
   // console.log(data)
-  axios.post("http://localhost:3000/temp", data)
+  axios.post("http://localhost:3001/data", data)
     .then(response => {
       console.log(response.data);
     })
     .catch(error => {
       console.error('Error:', error);
     });
+
+    router.go(router.currentRoute)
 }
 
 const closeModal = () => {

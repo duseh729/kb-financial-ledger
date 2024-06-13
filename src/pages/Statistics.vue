@@ -30,12 +30,10 @@
         <MonthlyChart class="monthlyChartWrapper" title="수입" :data="mappedIncome[curDate]" />
         <MonthlyChart class="monthlyChartWrapper" title="지출" :data="mappedExpense[curDate] " />
       </div>
-      <div class="detailChartWrapper">
-        <DetailChart 
-          :prevMonthData="mappedExpense[getPreviousMonth(curDate)]" 
-          :curMonthData="mappedExpense[curDate]"
-        />
-      </div>
+      <DetailChart 
+        :prevMonthData="mappedExpense[getPreviousMonth(curDate)]" 
+        :curMonthData="mappedExpense[curDate]"
+      />
     </div>
   </div>
 
