@@ -20,15 +20,21 @@
             <select id="asset" v-model="asset" required>
               <!-- <option value="card">카드</option> -->
               <option value="은행">은행</option>
-              <option value="현금">현금</option>
+              <option
+                value="현금
+              "
+              >
+                현금
+              </option>
             </select>
           </div>
           <div class="form-group">
             <label for="category">분류</label>
-            <select id="asset" v-model="category" required>
-              <option value="월급">월급</option>
-              <option value="용돈">용돈</option>
-              <option value="기타">기타</option>
+            <select v-if="type === 'income'" id="asset" v-model="category" required>
+              <option v-for="(item, index) in incomeCategory" :value="item" :key="index">{{ item }}</option>
+            </select>
+            <select v-else id="asset" v-model="category" required>
+              <option v-for="(item, index) in expenseCategory" :value="item" :key="index">{{ item }}</option>
             </select>
           </div>
           <div class="form-group">
@@ -61,11 +67,14 @@ const props = defineProps({
 });
 
 const amount = ref(null);
-const type = ref('income');
+const type = ref("income");
 const category = ref(null);
 const memo = ref(null);
 const date = ref(null);
 const asset = ref(null);
+
+const incomeCategory = ["월급", "용돈", "기타"];
+const expenseCategory = ["식비", "쇼핑", "미용비", "교통비", "교육비", "기타"];
 
 // const submitForm = () => {
 //   const data = {
