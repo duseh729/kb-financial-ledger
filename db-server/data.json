@@ -2,7 +2,7 @@
   "data": [
     {
       "date": "2024-06-10",
-      "asset": "카드",
+      "asset": "은행",
       "category": "식비",
       "amount": 10000,
       "description": "식비 지출",
@@ -11,57 +11,12 @@
     },
     {
       "date": "2024-06-10",
-      "asset": "은행",
+      "asset": "현금",
       "category": "월급",
-      "amount": 20000,
-      "description": "YES24 반품 비용",
-      "type": "income",
-      "id": "134f"
-    },
-    {
-      "date": "2024-06-10",
-      "asset": "은행",
-      "category": "이체",
-      "amount": 50000,
-      "description": "-",
-      "type": "transfer",
-      "id": "f393"
-    },
-    {
-      "date": "2024-06-10",
-      "asset": "은행",
-      "category": "월급",
-      "amount": 60000,
+      "amount": 500000,
       "description": "국민취업지원제도",
       "type": "income",
       "id": "63d4"
-    },
-    {
-      "date": "2024-06-10",
-      "asset": "은행",
-      "category": "월급",
-      "amount": 80000,
-      "description": "KB IT's Your Life 출판장려금",
-      "type": "income",
-      "id": "b954"
-    },
-    {
-      "date": "2024-06-10",
-      "asset": "은행",
-      "category": "월급",
-      "amount": 90000,
-      "description": "KB IT's Your Life 출판장려금",
-      "type": "income",
-      "id": "84a8"
-    },
-    {
-      "date": "2024-06-10",
-      "asset": "은행",
-      "category": "월급",
-      "amount": 1000000,
-      "description": "KB IT's Your Life 출판장려금",
-      "type": "income",
-      "id": "8d5f"
     },
     {
       "date": "2024-05-25",
@@ -115,6 +70,15 @@
       "category": "월급",
       "amount": 3333,
       "description": "주움",
+      "type": "income"
+    },
+    {
+      "id": "ca2c",
+      "date": "2024-06-12",
+      "asset": "은행",
+      "category": "월급",
+      "amount": 2000000,
+      "description": "집에 보내주세요",
       "type": "income"
     }
   ]
