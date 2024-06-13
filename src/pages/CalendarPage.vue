@@ -1,6 +1,6 @@
 <!-- 달력 페이지 -->
 <template>
-  <div style="padding: 50px">
+  <div>
     <div style="display: flex; gap: 18px" v-if="dataLoaded">
       <Calendar
         :financialLedgerData="financialLedgerData"

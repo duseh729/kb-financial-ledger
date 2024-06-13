@@ -1,10 +1,21 @@
 <template lang="">
   <div class="memo-container">
     <h4>메모</h4>
-    <form action="">
+    <form>
       <label for="input-memo">{{ `${year}년 ${month + 1}월 ${date}일` }}</label>
-      <input type="text" placeholder="텍스트를 입력하세요." name="input-memo" />
-      <p v-for="(item, index) in getDescription()" :key="index">{{ item }}</p>
+      <div style="margin-top: 12px">
+        <span style="color:red">수입 상세</span> <br>
+        <div v-show="getDescription()" v-for="(item, index) in getDescription().incomeMemoTemp" :key="index" class="description-wrapper" >
+          <p>{{ item.description }}</p>
+          <p>{{ item.amount }}</p>
+        </div>
+        
+        <span style="color:blue">지출 상세</span> 
+        <div v-show="getDescription()" v-for="(item, index) in getDescription().expenseMemoTemp" :key="index" class="description-wrapper" >
+          <p>{{ item.description }}</p>
+          <p>{{ item.amount }}</p>
+        </div>
+      </div>
     </form>
   </div>
 </template>
@@ -41,15 +52,23 @@ const getDescription = () => {
       // console.log(props.financialLedgerData[props.year][month])
       if (props.financialLedgerData[props.year][month][date] !== undefined) {
         // console.log(props.financialLedgerData[props.year][month][date])
-        const memoTemp = []
-        for(let i of props.financialLedgerData[props.year][month][date]){
-          if(memoTemp.length>=3){
+        const incomeMemoTemp = [];
+        const expenseMemoTemp = [];
+        for (let i of props.financialLedgerData[props.year][month][date]) {
+          if (incomeMemoTemp.length >= 3 && expenseMemoTemp.length >= 3) {
             break;
-            }
-          memoTemp.push(i.description)
+          }
+          // console.log(i.description)
+          if (i.type === "income" && incomeMemoTemp.length < 3) {
+            incomeMemoTemp.push({ description: i.description, amount: i.amount.toLocaleString("ko-KR") });
+          } else if (i.type === "expense" && expenseMemoTemp.length < 3) {
+            expenseMemoTemp.push({ description: i.description, amount: i.amount.toLocaleString("ko-KR") });
+          }
         }
-        // console.log(memoTemp)
-        return memoTemp
+        // console.log(incomeMemoTemp)
+        return { incomeMemoTemp, expenseMemoTemp };
+      }else{
+        return false
       }
     }
   }

@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div>
     <h2>자산</h2>
     <div class="assets-overview">
       <div class="asset-cards" v-if="groupedAssets.chartData">
@@ -17,25 +17,28 @@
         </div>
       </div>
       <div class="asset-summary">
-        <h1>자산 전체</h1>
-        <div class="container" v-if="groupedAssets.chartData && assetData.length">
+        <h4>자산 전체</h4>
+
+        <div class="assets-total-wrapper">
+          <span>총 자산</span><span>{{ (groupedAssets.cash.total + groupedAssets.bank.total).toLocaleString("ko-KR") }}원</span>
+        </div>
+
+        <div class="chart-wrapper" v-if="groupedAssets.chartData && assetData.length">
           <asset-chart :assetData="groupedAssets.chartData"></asset-chart>
         </div>
-        <div v-if="groupedAssets.chartData && assetData.length">
+        <div class="chart-wrapper" v-if="groupedAssets.chartData && assetData.length">
           <DonutChart :data="donutChartData" />
         </div>
-        <div v-else>
-          자산 데이터가 없습니다.
-        </div>
+        <div v-else>자산 데이터가 없습니다.</div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import axios from 'axios';
-import AssetChart from '../components/Assets/AssetChart.vue';
-import DonutChart from '../components/Assets/DonutChart.vue';
+import axios from "axios";
+import AssetChart from "../components/Assets/AssetChart.vue";
+import DonutChart from "../components/Assets/DonutChart.vue";
 
 export default {
   components: {
@@ -44,12 +47,8 @@ export default {
   },
   data() {
     return {
-      assetData: [
-
-      ],
-      groupedAssets: {
-
-      },
+      assetData: [],
+      groupedAssets: {},
       donutChartData: [],
     };
   },
@@ -62,33 +61,33 @@ export default {
   methods: {
     async fetchAssetData() {
       try {
-        const response = await axios.get('http://localhost:3000/temp');
+        const response = await axios.get("http://localhost:3001/data");
         this.assetData = response.data.map(item => ({
           date: item.date,
           amount: item.amount,
         }));
       } catch (error) {
-        console.error('데이터를 가져오는 중 오류가 발생했습니다.', error);
+        console.error("데이터를 가져오는 중 오류가 발생했습니다.", error);
       }
     },
     async fetchAssets() {
       try {
-        const response = await axios.get('http://localhost:3000/temp');
+        const response = await axios.get("http://localhost:3001/data");
         if (response.data && Array.isArray(response.data)) {
           this.assets = response.data;
           this.groupAssets();
           this.prepareChartData();
           this.prepareDonutChartData();
         } else {
-          console.error('올바르지 않은 데이터 형식:', response.data);
+          console.error("올바르지 않은 데이터 형식:", response.data);
         }
       } catch (error) {
-        console.error('자산 데이터를 가져오는 데 실패했습니다:', error);
+        console.error("자산 데이터를 가져오는 데 실패했습니다:", error);
       }
     },
     groupAssets() {
       if (!Array.isArray(this.assets)) {
-        console.error('자산 데이터가 배열이 아닙니다:', this.assets);
+        console.error("자산 데이터가 배열이 아닙니다:", this.assets);
         return;
       }
 
@@ -98,20 +97,20 @@ export default {
       };
 
       this.assets.forEach(asset => {
-        if (asset.asset === 'cash' && asset.type === 'income') {
+        if (asset.asset === "cash" && asset.type === "income") {
           this.groupedAssets.cash.total += asset.amount;
-        } else if (asset.asset === 'cash' && asset.type === 'expense') {
+        } else if (asset.asset === "cash" && asset.type === "expense") {
           this.groupedAssets.cash.total -= asset.amount;
-        } else if (asset.asset === 'bank' && asset.type === 'income') {
+        } else if (asset.asset === "bank" && asset.type === "income") {
           this.groupedAssets.bank.total += asset.amount;
-        } else if (asset.asset === 'bank' && asset.type === 'expense') {
+        } else if (asset.asset === "bank" && asset.type === "expense") {
           this.groupedAssets.bank.total -= asset.amount;
         }
       });
     },
     prepareChartData() {
       if (!Array.isArray(this.assets)) {
-        console.error('자산 데이터가 배열이 아닙니다:', this.assets);
+        console.error("자산 데이터가 배열이 아닙니다:", this.assets);
         return;
       }
 
@@ -119,9 +118,9 @@ export default {
       let cumulativeAmount = 0;
 
       this.groupedAssets.chartData = sortedAssets.map(asset => {
-        if (asset.type === 'income') {
+        if (asset.type === "income") {
           cumulativeAmount += asset.amount;
-        } else if (asset.type === 'expense') {
+        } else if (asset.type === "expense") {
           cumulativeAmount -= asset.amount;
         }
         return {
@@ -130,7 +129,7 @@ export default {
         };
       });
 
-      console.log('차트 데이터 준비 완료:', this.groupedAssets.chartData);
+      console.log("차트 데이터 준비 완료:", this.groupedAssets.chartData);
     },
     prepareDonutChartData() {
       const totalCash = this.groupedAssets.cash.total;
@@ -139,22 +138,20 @@ export default {
 
       this.donutChartData = [
         {
-          label: '현금',
+          label: "현금",
           value: totalCash,
         },
         {
-          label: '은행',
+          label: "은행",
           value: totalBank,
         },
       ];
 
-      console.log('도넛 차트 데이터 준비 완료:', this.donutChartData);
+      console.log("도넛 차트 데이터 준비 완료:", this.donutChartData);
     },
   },
 };
 </script>
-
-
 
 <style scoped>
 /* 부모 요소들의 높이를 설정하여 자식 요소들이 100% 높이를 가질 수 있도록 함 */
@@ -186,7 +183,6 @@ body {
   /* 카드와 요약 사이의 간격 */
 }
 
-
 .asset-cards {
   display: flex;
   flex-direction: column;
@@ -197,7 +193,6 @@ body {
   /* 좌측 카드 영역의 비율 */
   justify-content: flex-start;
   /* 카드들이 상단에 정렬되도록 설정 */
-
 }
 
 .asset-card {
@@ -231,7 +226,7 @@ body {
   display: flex;
   flex-direction: column;
   /* align-items: center; */
-  padding: 24px;
+  padding: 16px;
   justify-content: center;
   border: 1px solid #ddd;
   border-radius: 10px;
@@ -244,5 +239,15 @@ body {
 .chart-container {
   width: 100%;
   max-width: 600px;
+}
+
+.assets-total-wrapper {
+  background-color: rgb(235, 246, 255);
+  color: rgb(37, 157, 255);
+  margin-top: 16px;
+  padding: 12px 28px;
+  border-radius: 5px;
+  display: flex;
+  justify-content: space-between;
 }
 </style>

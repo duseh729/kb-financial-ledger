@@ -18,7 +18,6 @@
               <th class="sb1">전체</th>
               <th>수입</th>
               <th class="sb2">지출</th>
-              <!-- <th class="sb2">이체</th> -->
             </tr>
           </thead>
           <tbody>
@@ -26,7 +25,6 @@
               <td class="balance">{{ totalBalance }} 원</td>
               <td class="income">{{ formattedTotalIncome }} 원</td>
               <td class="expense">{{ formattedTotalExpense }} 원</td>
-              <!-- <td class="transfer">{{ formattedTotalTransfer }} 원</td> -->
             </tr>
           </tbody>
         </table>
@@ -36,15 +34,17 @@
         <table>
           <thead>
             <tr>
-              <th class="hb1" width="20%">날짜</th>
+              <th class="hb1" width="7%">선택</th>
+              <th width="15%">날짜</th>
               <th width="10%">자산</th>
               <th width="15%">분류</th>
               <th width="20%">금액</th>
-              <th class="hb2" width="40%">내용</th>
+              <th class="hb2" width="35%">내용</th>
             </tr>
           </thead>
           <tbody>
             <tr v-for="(history, index) in paginatedHistorys" :key="index">
+              <td><input type="checkbox" v-model="selectedHistorys" :value="history.id" /></td>
               <td>{{ history.date }}</td>
               <td>{{ history.asset }}</td>
               <td>{{ history.category }}</td>
@@ -62,7 +62,6 @@
       </div>
     </div>
 
-    <!-- 날짜 필터링 기능 -->
     <div class="container-right">
       <div class="date-inputs">
         <input type="date" id="startDate" v-model="startDate" @change="filterHistorysByDateRange" />
@@ -88,10 +87,11 @@
       </div>
 
       <input type="text" v-model="selectedDescription" placeholder="내용 입력" @input="filterHistorysByFilters" class="input-description" />
+
+      <button @click="deleteSelectedHistorys" class="delete-button">삭제</button>
     </div>
   </div>
 </template>
-
 
 <script setup>
 import { ref, computed, onMounted } from 'vue'
@@ -132,6 +132,7 @@ const endDate = ref('')
 const months = ref(generateMonths())
 const historys = ref([])
 const filteredHistorys = ref([])
+const selectedHistorys = ref([]) // Store selected history IDs
 
 const selectedAsset = ref('')
 const selectedCategory = ref('')
@@ -140,7 +141,7 @@ const selectedDescription = ref('')
 const loadHistorys = async() => {
   try {
     const response = await axios.get('http://localhost:3001/data')
-    historys.value = response.data
+    historys.value = response.data.sort((a, b) => new Date(a.date) - new Date(b.date))
     filterHistorysByMonth()
   } catch(error) {
     console.error('Error loading historys:', error)
@@ -154,8 +155,6 @@ const filterHistorysByMonth = () => {
   setupPagination()
 }
 
-
-/* 날짜 별 필터링 기능 */
 const filterHistorysByDateRange = () => {
   const start = new Date(startDate.value)
   const end = new Date(endDate.value)
@@ -179,7 +178,7 @@ const filterHistorysByDateRange = () => {
 }
 
 const filterHistorysByFilters = () => {
-  filterHistorysByDateRange() // 날짜 필터링 먼저 적용
+  filterHistorysByDateRange()
 
   if (selectedAsset.value) {
     filteredHistorys.value = filteredHistorys.value.filter(history =>
@@ -199,7 +198,6 @@ const filterHistorysByFilters = () => {
   setupPagination()
 }
 
-
 onMounted(() => {
   loadHistorys()
 })
@@ -216,12 +214,6 @@ const totalExpense = computed(() =>
     .reduce((total, history) => total + history.amount, 0)
 )
 
-// const totalTransfer = computed(() =>
-//   filteredHistorys.value
-//     .filter((history) => history.type === 'transfer')
-//     .reduce((total, history) => total + history.amount, 0)
-// )
-
 const totalBalance = computed(() => {
   const balance = totalIncome.value - totalExpense.value
   return balance.toLocaleString()
@@ -229,10 +221,9 @@ const totalBalance = computed(() => {
 
 const formattedTotalIncome = computed(() => totalIncome.value.toLocaleString())
 const formattedTotalExpense = computed(() => totalExpense.value.toLocaleString())
-// const formattedTotalTransfer = computed(() => totalTransfer.value.toLocaleString())
 
 const currentPage = ref(1)
-const perPage = 10
+const perPage = 13
 
 const paginatedHistorys = computed(() => {
   const start = (currentPage.value - 1) * perPage
@@ -257,7 +248,30 @@ const nextPage = () => {
 const setupPagination = () => {
   currentPage.value = 1
 }
+
+/* 삭제 기능 시스템 */
+const deleteSelectedHistorys = async() => {
+  if (selectedHistorys.value.length === 0) {
+    alert('선택된 항목이 없습니다.')
+    return
+  }
+
+  try {
+    await Promise.all(
+      selectedHistorys.value.map(async id => {
+        await axios.delete(`http://localhost:3001/data/${id}`)
+      })
+    )
+    alert('선택된 항목이 삭제되었습니다.')
+    selectedHistorys.value = [] 
+    loadHistorys()
+  } catch(error) {
+    console.error('Error deleting historys:', error)
+    alert('항목 삭제에 실패했습니다.')
+  }
+}
 </script>
+
 
 <style scoped>
 @import url("../assets/css/History/history-month-selector.css");
