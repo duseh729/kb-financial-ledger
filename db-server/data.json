@@ -79,6 +79,22 @@
       "category": "월급",
       "amount": 2000000,
       "description": "집에 보내주세요",
+    },
+      "id": "323e",
+      "date": "2024-06-10",
+      "asset": "현금\r\n              ",
+      "category": "미용비",
+      "amount": 12312,
+      "description": "머리 자름",
+      "type": "expense"
+    },
+    {
+      "id": "9097",
+      "date": "2024-06-10",
+      "asset": "현금\r\n              ",
+      "category": "기타",
+      "amount": 1111,
+      "description": "주움",
       "type": "income"
     }
   ]

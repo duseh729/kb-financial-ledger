@@ -3,7 +3,7 @@
   <div class="statisticsContainer">
     <div class="dropdown">
       <button class="btn btn-secondary dropdown-toggle custom-dropdown-btn" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-        {{curDate}}
+        {{ curDate }}
       </button>
       <ul class="dropdown-menu">
         <div @click.stop.prevent class="monthSelector">
@@ -14,7 +14,7 @@
           <span v-else class="skeleton"></span>
           <span class="monthIndicator">{{ date[curYearIdx]?.year }}</span>
           <button class="monthButton" style="float: right;"  
-          @click="moveForward" v-if="curYearIdx != 0">
+            @click="moveForward" v-if="curYearIdx != 0">
             >
           </button>
           <span v-else class="skeleton"></span>
@@ -25,15 +25,23 @@
       </ul>
     </div>
 
-    <div class="contentWrapper">
-      <div class="chartWrapper">
-        <MonthlyChart class="monthlyChartWrapper" title="수입" :data="mappedIncome[curDate]" />
-        <MonthlyChart class="monthlyChartWrapper" title="지출" :data="mappedExpense[curDate] " />
-      </div>
-      <DetailChart 
-        :prevMonthData="mappedExpense[getPreviousMonth(curDate)]" 
-        :curMonthData="mappedExpense[curDate]"
+    <div class="chartWrapper">
+      <div class="incomeChartWrapper">
+        <MonthlyChart title="수입" :data="mappedIncome[curDate]" />
+        <DetailChart 
+          title="수입"
+          :prevMonthData="mappedIncome[getPreviousMonth(curDate)]" 
+          :curMonthData="mappedIncome[curDate]"
       />
+      </div>
+      <div class="expenseChartWrapper">
+        <MonthlyChart title="지출" :data="mappedExpense[curDate] " />
+        <DetailChart 
+          title="지출"
+          :prevMonthData="mappedExpense[getPreviousMonth(curDate)]" 
+          :curMonthData="mappedExpense[curDate]"
+        />
+      </div>
     </div>
   </div>
 
@@ -184,7 +192,6 @@ const getPreviousMonth = (yearMonth) => {
     throw new Error('유효하지 않은 날짜 포맷');
   }
 
-  // 이전 달 계산
   if (monthNum === 1) {
     yearNum -= 1;
     monthNum = 12;

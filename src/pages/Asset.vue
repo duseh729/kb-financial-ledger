@@ -1,31 +1,34 @@
 <template>
-  <div class="container">
+  <div>
     <h2>자산</h2>
     <div class="assets-overview">
-      <div class="asset-cards" v-if="groupedAssets.chartData">
+      <div class="asset-card-wrapper">
         <div class="asset-card">
           <h3>현금</h3>
           <div class="details">
-            <span>총 금액: </span><span>{{ groupedAssets.cash.total }} 원</span>
+            <span>총 금액: </span><span>{{ groupedAssets.cash.total.toLocaleString("ko-KR") }} 원</span>
           </div>
         </div>
         <div class="asset-card">
           <h3>은행</h3>
           <div class="details">
-            <span>총 금액: </span><span>{{ groupedAssets.bank.total }} 원</span>
+            <span>총 금액: </span><span>{{ groupedAssets.bank.total.toLocaleString("ko-KR") }} 원</span>
           </div>
         </div>
       </div>
       <div class="asset-summary">
-        <h1>자산 전체</h1>
-        <div class="container" v-if="groupedAssets.chartData && assetData.length">
-          <asset-chart :assetData="groupedAssets.chartData"></asset-chart>
+        <h4>자산 전체</h4>
+        <div class="chart-wrapper">
+          <asset-chart v-if="groupedAssets.chartData && groupedAssets.chartData.length" :assetData="groupedAssets.chartData"></asset-chart>
+          <div v-else>차트 데이터가 없습니다.</div>
         </div>
-        <div v-if="groupedAssets.chartData && assetData.length">
-          <DonutChart :data="donutChartData" />
+        <div class="assets-total-wrapper">
+          <span>총 자산</span>
+          <span>{{ totalAssets.toLocaleString("ko-KR") }} 원</span>
         </div>
-        <div v-else>
-          자산 데이터가 없습니다.
+        <div class="chart-wrapper">
+          <DonutChart v-if="donutChartData.length" :data="donutChartData" />
+          <div v-else>도넛 차트 데이터가 없습니다.</div>
         </div>
       </div>
     </div>
@@ -33,9 +36,9 @@
 </template>
 
 <script>
-import axios from 'axios';
-import AssetChart from '../components/Assets/AssetChart.vue';
-import DonutChart from '../components/Assets/DonutChart.vue';
+import axios from "axios";
+import AssetChart from "../components/Assets/AssetChart.vue";
+import DonutChart from "../components/Assets/DonutChart.vue";
 
 export default {
   components: {
@@ -44,11 +47,11 @@ export default {
   },
   data() {
     return {
-      assetData: [
-
-      ],
+      assetData: [],
       groupedAssets: {
-
+        cash: { total: 0 },
+        bank: { total: 0 },
+        chartData: [],
       },
       donutChartData: [],
     };
@@ -56,81 +59,106 @@ export default {
   created() {
     this.fetchAssets();
   },
-  mounted() {
-    this.fetchAssetData();
-  },
   methods: {
-    async fetchAssetData() {
-      try {
-        const response = await axios.get('http://localhost:3001/data');
-        this.assetData = response.data.map(item => ({
-          date: item.date,
-          amount: item.amount,
-        }));
-      } catch (error) {
-        console.error('데이터를 가져오는 중 오류가 발생했습니다.', error);
-      }
-    },
     async fetchAssets() {
       try {
-        const response = await axios.get('http://localhost:3001/data');
+        const response = await axios.get("http://localhost:3001/data");
         if (response.data && Array.isArray(response.data)) {
-          this.assets = response.data;
+          this.assetData = response.data.map(item => ({
+            date: item.date,
+            amount: item.amount,
+            asset: item.asset,
+            type: item.type,
+          }));
           this.groupAssets();
           this.prepareChartData();
           this.prepareDonutChartData();
         } else {
-          console.error('올바르지 않은 데이터 형식:', response.data);
+          console.error("올바르지 않은 데이터 형식:", response.data);
         }
       } catch (error) {
-        console.error('자산 데이터를 가져오는 데 실패했습니다:', error);
+        console.error("자산 데이터를 가져오는 데 실패했습니다:", error);
       }
     },
     groupAssets() {
-      if (!Array.isArray(this.assets)) {
-        console.error('자산 데이터가 배열이 아닙니다:', this.assets);
+      if (!Array.isArray(this.assetData)) {
+        console.error("자산 데이터가 배열이 아닙니다:", this.assetData);
         return;
       }
 
-      this.groupedAssets = {
-        cash: { total: 0, unpaid: 0 },
-        bank: { total: 0, unpaid: 0 },
-      };
-
-      this.assets.forEach(asset => {
-        if (asset.asset === 'cash' && asset.type === 'income') {
+      this.assetData.forEach(asset => {
+        // console.log(asset.asset, asset.type)
+        if (asset.asset === "현금" && asset.type === "income") {
           this.groupedAssets.cash.total += asset.amount;
-        } else if (asset.asset === 'cash' && asset.type === 'expense') {
+        } else if (asset.asset === "현금" && asset.type === "expense") {
           this.groupedAssets.cash.total -= asset.amount;
-        } else if (asset.asset === 'bank' && asset.type === 'income') {
+        } else if (asset.asset === "은행" && asset.type === "income") {
           this.groupedAssets.bank.total += asset.amount;
-        } else if (asset.asset === 'bank' && asset.type === 'expense') {
+        } else if (asset.asset === "은행" && asset.type === "expense") {
           this.groupedAssets.bank.total -= asset.amount;
         }
       });
     },
     prepareChartData() {
-      if (!Array.isArray(this.assets)) {
-        console.error('자산 데이터가 배열이 아닙니다:', this.assets);
+      if (!Array.isArray(this.assetData)) {
+        console.error("자산 데이터가 배열이 아닙니다:", this.assetData);
         return;
       }
 
-      const sortedAssets = [...this.assets].sort((a, b) => new Date(a.date) - new Date(b.date));
-      let cumulativeAmount = 0;
+      const monthlyData = {};
 
-      this.groupedAssets.chartData = sortedAssets.map(asset => {
-        if (asset.type === 'income') {
-          cumulativeAmount += asset.amount;
-        } else if (asset.type === 'expense') {
-          cumulativeAmount -= asset.amount;
+      this.assetData.forEach(entry => {
+        const date = new Date(entry.date);
+        const year = date.getFullYear();
+        const month = date.getMonth() + 1;
+
+        if (!monthlyData[year]) {
+          monthlyData[year] = {};
         }
-        return {
-          date: asset.date,
-          amount: cumulativeAmount,
-        };
+        if (!monthlyData[year][month]) {
+          monthlyData[year][month] = 0;
+        }
+        monthlyData[year][month] += entry.amount;
       });
 
-      console.log('차트 데이터 준비 완료:', this.groupedAssets.chartData);
+      const chartData = [];
+
+      Object.keys(monthlyData).forEach(year => {
+        const months = Object.keys(monthlyData[year])
+          .map(Number)
+          .sort((a, b) => a - b);
+        months.forEach(month => {
+          // cumulativeAmount += monthlyData[year][month];
+          chartData.push({
+            date: `${year}-${String(month).padStart(2, "0")}`,
+            amount: monthlyData[year][month],
+          });
+        });
+      });
+
+      Object.keys(monthlyData).forEach(year => {
+        // 전년도 데이터가 있는 경우, 현재년도 1월에 추가
+        // console.log(monthlyData[year])
+        if (monthlyData[year - 1]) {
+          const lastYearData = Object.values(monthlyData[year - 1]);
+          // console.log(lastYearData);
+          const lastYearTotal = lastYearData.reduce((total, amount) => total + amount, 0);
+          // console.log(lastYearTotal);
+          if (!monthlyData[year]["01"]) {
+            monthlyData[year]["01"]=lastYearTotal
+            chartData.push({
+              date: `${year}-01`,
+              amount: lastYearTotal,
+            });
+          } else {
+            monthlyData[year]["01"] += lastYearTotal;
+          }
+        }
+      });
+      // console.log(monthlyData)
+
+      // console.log('chartData', chartData);
+      this.groupedAssets.chartData = chartData;
     },
     prepareDonutChartData() {
       const totalCash = this.groupedAssets.cash.total;
@@ -139,65 +167,35 @@ export default {
 
       this.donutChartData = [
         {
-          label: '현금',
+          label: "현금",
           value: totalCash,
         },
         {
-          label: '은행',
+          label: "은행",
           value: totalBank,
         },
       ];
-
-      console.log('도넛 차트 데이터 준비 완료:', this.donutChartData);
+    },
+  },
+  computed: {
+    totalAssets() {
+      return this.groupedAssets.cash.total + this.groupedAssets.bank.total;
     },
   },
 };
 </script>
 
-
-
 <style scoped>
-/* 부모 요소들의 높이를 설정하여 자식 요소들이 100% 높이를 가질 수 있도록 함 */
-html,
-body {
-  height: 100%;
-  margin: 0;
-  padding: 0;
-}
-
-.container {
-  display: flex;
-  flex-direction: column;
-  /* 전체 화면 높이로 설정 */
-  padding: 20px;
-}
 
 .assets-overview {
   display: flex;
-  flex-direction: row;
-  /* 수평 정렬 */
-  justify-content: space-between;
-  /* 양쪽으로 정렬 */
-  align-items: stretch;
-  /* 자식 요소들이 부모 요소의 높이에 맞추도록 설정 */
-  height: 100%;
-  /* 전체 높이 */
-  gap: 20px;
-  /* 카드와 요약 사이의 간격 */
+  /* justify-content: space-between; */
+  gap: 16px;
 }
 
-
-.asset-cards {
+.asset-card-wrapper {
   display: flex;
   flex-direction: column;
-
-  height: 100%;
-  /* 부모 요소의 높이에 맞추도록 설정 */
-  width: 30%;
-  /* 좌측 카드 영역의 비율 */
-  justify-content: flex-start;
-  /* 카드들이 상단에 정렬되도록 설정 */
-
 }
 
 .asset-card {
@@ -207,7 +205,6 @@ body {
   padding: 15px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   margin-bottom: 20px;
-  /* 카드 사이에 간격 추가 */
 }
 
 .asset-card h3 {
@@ -221,28 +218,24 @@ body {
   margin-bottom: 5px;
 }
 
-.details span {
-  font-size: 1em;
-}
-
 .asset-summary {
+  position: relative;
   flex: 1;
-  /* 우측 요약 영역이 나머지 공간을 차지 */
   display: flex;
   flex-direction: column;
-  /* align-items: center; */
-  padding: 24px;
+  padding: 16px;
   justify-content: center;
   border: 1px solid #ddd;
   border-radius: 10px;
 }
 
-.asset-summary h1 {
-  margin-bottom: 20px;
-}
-
-.chart-container {
-  width: 100%;
-  max-width: 600px;
+.assets-total-wrapper {
+  background-color: rgb(235, 246, 255);
+  color: rgb(37, 157, 255);
+  margin-top: 16px;
+  padding: 12px 28px;
+  border-radius: 5px;
+  display: flex;
+  justify-content: space-between;
 }
 </style>

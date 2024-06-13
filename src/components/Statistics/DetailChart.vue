@@ -1,5 +1,5 @@
 <template>
-    <div class="detailChartWrapper">
+    <div class="lineChart">
       <Line id="my-chart-id" :options="chartOptions" :data="chartData" :key="forceRerender"/>
     </div>
 </template>
@@ -28,7 +28,7 @@ ChartJS.register(
   Legend
 );
 
-const props = defineProps({prevMonthData : Array, curMonthData : Array})
+const props = defineProps({title: String, prevMonthData : Array, curMonthData : Array})
 const forceRerender  = ref(0);
 const prevChartPoints = reactive([])
 const curChartPoints = reactive([])
@@ -38,8 +38,8 @@ const chartData = reactive({
   datasets: [
     {
       label: "현재 사용량",
-      borderColor: "#f87979",
-      backgroundColor: "#f87979",
+      borderColor: props.title == "지출" ? "#f87979" : "blue",
+      backgroundColor: props.title == "지출" ? "#f87979" : "blue",
       data: [],
     },
     {
@@ -52,14 +52,23 @@ const chartData = reactive({
 });
 
 const chartOptions = reactive({
+  responsive: true,
   maintainAspectRatio: false,
   plugins: {
     legend: {
+      labels: {
+        font: {
+          size: 20
+        }
+      },
       position: "right",
     },
     title: {
+      font:{
+        size: 20
+      },
       display: true,
-      text: "전월 지출 비교",
+      text: `전월 ${props.title} 비교`,
       amrgin: {
         left: 0,
       },
@@ -69,6 +78,22 @@ const chartOptions = reactive({
       },
     },
   },
+  scales: {
+    x: {
+      ticks: {
+        font: {
+          size: 20
+        }
+      }
+    },
+    y: {
+      ticks: {
+        font: {
+          size: 20
+        }
+      }
+    }
+  }
 });
 
 onUpdated(() =>{
