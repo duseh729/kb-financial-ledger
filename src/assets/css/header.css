@@ -2,7 +2,8 @@ nav {
   background-color: #545045;
   padding: 0 48px;
   display: flex;
-  justify-content: space-between;
+  /* justify-content: space-between; */
+  gap: 12px;
   align-items: center;
 }
 .nav-item {

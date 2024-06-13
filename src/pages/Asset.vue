@@ -1,6 +1,5 @@
 <template>
   <div>
-    <h2>자산</h2>
     <div class="assets-overview">
       <div class="asset-card-wrapper">
         <div class="asset-card">
