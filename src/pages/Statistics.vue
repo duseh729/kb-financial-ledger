@@ -2,7 +2,7 @@
 <template>
   <div class="statisticsContainer">
     <div class="dropdown">
-      <button class="btn btn-secondary dropdown-toggle custom-dropdown-btn" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+      <button :style="`padding:0px`" class="btn btn-secondary dropdown-toggle custom-dropdown-btn" type="button" data-bs-toggle="dropdown" aria-expanded="false">
         {{ curDate }}
       </button>
       <ul class="dropdown-menu">
