@@ -62,7 +62,7 @@ export default {
   methods: {
     async fetchAssetData() {
       try {
-        const response = await axios.get('http://localhost:3000/temp');
+        const response = await axios.get('http://localhost:3001/data');
         this.assetData = response.data.map(item => ({
           date: item.date,
           amount: item.amount,
@@ -73,7 +73,7 @@ export default {
     },
     async fetchAssets() {
       try {
-        const response = await axios.get('http://localhost:3000/temp');
+        const response = await axios.get('http://localhost:3001/data');
         if (response.data && Array.isArray(response.data)) {
           this.assets = response.data;
           this.groupAssets();

@@ -282,36 +282,6 @@ const getExpense = date => {
   return financialLedgerData[year][month][day] !== undefined ? sum : false;
 };
 
-// watch(
-//   () => [props.financialLedgerData, props.year, props.month],
-//   newValue => {
-//     // console.log(newValue);
-//     if (newValue[0][props.year] !== undefined) {
-//       const temp = newValue[0][props.year][String(props.month + 1).padStart(2, "0")];
-//       for (let i in temp) {
-//         // console.log(temp[i].type)
-//         // console.log(i) // 일
-//         // console.log(temp)
-//         // console.log(income.value)
-//         if (temp[i].type === "income" || income.value[i] === undefined) {
-//           income.value[i] = temp[i];
-//         } else if (temp[i].type === "income" && income.value[i]) {
-//           // console.log("expense임")
-//           // console.log(income.value[i])
-//           income.value[i] = { ...income.value[i], ...temp[i] };
-//         } else if (temp[i].type === "expense") {
-//           // console.log("expense임")
-//           expense.value[i] = temp[i];
-//         } else if (temp[i].type === "expense") {
-//           // console.log("expense임")
-//           expense.value[i] = temp[i];
-//         }
-//       }
-//     }
-//     // console.log(income.value);
-//   },
-//   { immediate: true, deep: true }
-// );
 // props가 변경될 때마다 getDates 함수 호출
 watch(
   () => [props.year, props.month],
