@@ -6,13 +6,14 @@
       <div style="margin-top: 12px">
         <span style="color:red">수입 상세</span> <br>
         <div v-show="getDescription()" v-for="(item, index) in getDescription().incomeMemoTemp" :key="index" class="description-wrapper" >
-          <p>{{ item.description }}</p>
+          <!-- {{item}} -->
+          <p>{{ `${item.description}(${item.asset})` }}</p>
           <p>{{ item.amount }}</p>
         </div>
         
         <span style="color:blue">지출 상세</span> 
         <div v-show="getDescription()" v-for="(item, index) in getDescription().expenseMemoTemp" :key="index" class="description-wrapper" >
-          <p>{{ item.description }}</p>
+          <p>{{ `${item.description}(${item.asset})` }}</p>
           <p>{{ item.amount }}</p>
         </div>
       </div>
@@ -58,14 +59,14 @@ const getDescription = () => {
           if (incomeMemoTemp.length >= 3 && expenseMemoTemp.length >= 3) {
             break;
           }
-          // console.log(i.description)
+          // console.log(i.asset)
           if (i.type === "income" && incomeMemoTemp.length < 3) {
-            incomeMemoTemp.push({ description: i.description, amount: i.amount.toLocaleString("ko-KR") });
+            incomeMemoTemp.push({ description: i.description, amount: i.amount.toLocaleString("ko-KR"), asset: i.asset });
           } else if (i.type === "expense" && expenseMemoTemp.length < 3) {
-            expenseMemoTemp.push({ description: i.description, amount: i.amount.toLocaleString("ko-KR") });
+            expenseMemoTemp.push({ description: i.description, amount: i.amount.toLocaleString("ko-KR"), asset: i.asset });
           }
         }
-        // console.log(incomeMemoTemp)
+        console.log(incomeMemoTemp)
         return { incomeMemoTemp, expenseMemoTemp };
       }else{
         return false

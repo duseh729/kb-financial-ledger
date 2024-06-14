@@ -220,10 +220,13 @@ export default {
 }
 
 .select-container {
-  margin-bottom: 20px;
+  /* padding: 12px; */
   position: absolute;
-  top: 4px;
+  top: 19px;
   left: 130px;
+}
+.select-container select{
+  padding: 2px;
 }
 
 .chart-container {
