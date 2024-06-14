@@ -1,3 +1,4 @@
+// 차트 컬러 통일을 위한 상수 리턴하는 함수
 export function getChartColors(length) {
 
     const colorPalette = [

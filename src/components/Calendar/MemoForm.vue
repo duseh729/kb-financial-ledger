@@ -44,6 +44,8 @@ const props = defineProps({
 
 // const financialLedgerData = ref(props.financialLedgerData)
 
+// 캘린더 해당 날짜의 메모를 가져오는 함수
+// return incomeMemoTemp, expenseMemoTemp <- 수입 지출 메모 배열 
 const getDescription = () => {
   const month = String(props.month + 1).padStart(2, "0");
   const date = String(props.date).padStart(2, "0");

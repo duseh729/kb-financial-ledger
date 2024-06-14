@@ -36,6 +36,10 @@ const props = defineProps({
 const income = ref(0);
 const expense = ref(0);
 
+/**
+ * 메인(캘린더) 사이드바의 수입, 지출 값을 업데이트하는 함수
+ * income, expense 각 ref변수에 값을 할당해준다.
+ */
 const updateIncomeExpense = () => {
   income.value = 0;
   expense.value = 0;

@@ -1,12 +1,13 @@
 <template lang="">
   <div>
     <Header />
+    <!-- 루트 경로에 padding값을 주어 각 페이지별 레이아웃 맞춤. -->
     <div class="root-container">
       <router-view></router-view>
     </div>
-    <!-- <router-view></router-view> -->
+    
+    <!-- 가계부 항목 추가는 전체 페이지에서 할 수 있도록 루트에 적용 -->
     <button class="fixed-modal-button" @click="modalOpen">+</button>
-    <!-- {{ modalCheck }} -->
     <IncomeExpenseForm :onClose="modalClose" :showModal="modalCheck" @form-submitted="handleSubmit" />
    
     

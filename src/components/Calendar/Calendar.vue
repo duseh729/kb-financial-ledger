@@ -34,6 +34,7 @@
               <span :class="{ today: isToday(date) }" :style="{ color: dateIndex === 0 ? 'red' : dateIndex === 6 ? 'blue' : 'inherit' }">{{ date[0] }}</span>
             </div>
             <div style="position: absolute; right: 0px; bottom: 0px; text-align: right">
+              <!-- 수입과 지출이 있을 때만 수입, 지출 텍스트 디스플레이 -->
               <span v-show="getIncome(date) && !date[1]" :style="`color:red`">+{{ getIncome(date).toLocaleString("ko-KR") }}<br /></span
               ><span v-show="getExpense(date) && !date[1]" :style="`color:blue`">-{{ getExpense(date).toLocaleString("ko-KR") }}<br /></span>
               <span v-show="!date[1] && (getIncome(date) || getExpense(date))">{{ (getIncome(date) - getExpense(date)).toLocaleString("ko-KR") }}</span>
@@ -86,14 +87,10 @@ const props = defineProps({
   },
 });
 
-// 로컬 상태로 props를 복사
-// const year = ref(props.year);
-// const month = ref(props.month);
-
 // 요일을 배열로 정의합니다.
 const days = ["일", "월", "화", "수", "목", "금", "토"];
 
-// 달력의 전체 날짜를 출력하는 함수를 정의합니다.
+// 달력의 전체 날짜를 출력하는 함수
 const getFirstAndLastDate = (month, year) => {
   const firstDay = new Date(year, month, 1).getDay();
   const lastDate = new Date(year, month + 1, 0).getDate();
@@ -112,12 +109,10 @@ const isPrevOrNextMonth = date => {
   return date < firstDay || date > lastDate;
 };
 
-// weeks 배열을 정의합니다.
 const weeks = ref([]);
 
-// 달력의 전체 날짜를 가져오는 함수를 정의합니다.
+// 달력의 전체 날짜를 가져오는 함수.
 const getDates = () => {
-  // console.log(props.month, props.year)
   const { firstDay, lastDate } = getFirstAndLastDate(props.month, props.year);
   const prevMonthDates = getPrevMonthDates(firstDay);
 

@@ -41,11 +41,9 @@ const updateStyles = () => {
 
 const normalStyle = item => {
   item.style.fontWeight = "normal";
-  // item.style.backgroundColor = "inherit"
 };
 const visitedStyle = item => {
   item.style.fontWeight = "700";
-  // item.style.backgroundColor = "gray"x
 };
 
 // 컴포넌트가 마운트될 때 스타일 업데이트
