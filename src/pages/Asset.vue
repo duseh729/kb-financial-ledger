@@ -15,9 +15,11 @@
           </div>
         </div>
       </div>
+
       <div class="asset-summary">
         <h4>자산 전체</h4>
         <div class="chart-wrapper">
+          <!-- 자산 변화 연단위로 디스플레이하는 컴포넌트 (line chart) -->
           <asset-chart v-if="groupedAssets.chartData && groupedAssets.chartData.length" :assetData="groupedAssets.chartData"></asset-chart>
           <div v-else>차트 데이터가 없습니다.</div>
         </div>
@@ -26,6 +28,7 @@
           <span>{{ totalAssets.toLocaleString("ko-KR") }} 원</span>
         </div>
         <div class="chart-wrapper">
+          <!-- 총 자산 컴포넌트 (donut chart) -->
           <DonutChart v-if="donutChartData.length" :data="donutChartData" />
           <div v-else>도넛 차트 데이터가 없습니다.</div>
         </div>
@@ -59,6 +62,7 @@ export default {
     this.fetchAssets();
   },
   methods: {
+    // 자산 가져오는 함수
     async fetchAssets() {
       try {
         const response = await axios.get("http://localhost:3001/data");
@@ -79,6 +83,8 @@ export default {
         console.error("자산 데이터를 가져오는 데 실패했습니다:", error);
       }
     },
+
+    // 자산 정리하는 함수
     groupAssets() {
       if (!Array.isArray(this.assetData)) {
         console.error("자산 데이터가 배열이 아닙니다:", this.assetData);
@@ -98,6 +104,8 @@ export default {
         }
       });
     },
+
+    // 차트데이터 만드는 함수.
     prepareChartData() {
       if (!Array.isArray(this.assetData)) {
         console.error("자산 데이터가 배열이 아닙니다:", this.assetData);
@@ -159,6 +167,8 @@ export default {
       // console.log('chartData', chartData);
       this.groupedAssets.chartData = chartData;
     },
+
+    // 도넛차트 데이터 만드는 함수
     prepareDonutChartData() {
       const totalCash = this.groupedAssets.cash.total;
       const totalBank = this.groupedAssets.bank.total;

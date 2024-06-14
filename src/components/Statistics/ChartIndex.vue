@@ -36,6 +36,7 @@ const lineStyle  = computed(() => {
     }
 })
 
+// 총 금액 계산하는 함수
 const calcTotalPrice = (data) =>{
     let sum = 0;
     for(let i = 0; i < data.length; i++){
