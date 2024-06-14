@@ -1,7 +1,7 @@
 <template lang="">
   <div>
     <nav class="flex-default">
-      <div id="logo" class="cursor-pointer"><router-link to="/" class="nav-link"> logo</router-link></div>
+      <div id="logo" class="cursor-pointer"><router-link to="/" class="nav-link"><span style="color:#ffbc00">F</span>lo<span style="color:#ffbc00">M</span></router-link></div>
       <div class="flex-default">
         <ul class="flex-default">
           <router-link to="/history" style="text-decoration: none"><li ref="history" class="nav-item cursor-pointer">내역</li></router-link>
