@@ -8,7 +8,7 @@ import Asset from "../pages/Asset.vue";
 import Statistics from "../pages/Statistics.vue";
 
 const router = createRouter({
-  history: createWebHistory(),
+  history: createWebHistory("/kb-financial-ledger"),
   routes: [
     { path: "/", component: CalendarPage },
     { path: "/history", component: History },
