@@ -78,8 +78,9 @@
       "asset": "은행",
       "category": "월급",
       "amount": 2000000,
-      "description": "집에 보내주세요",
+      "description": "집에 보내주세요"
     },
+    {
       "id": "323e",
       "date": "2024-06-10",
       "asset": "현금\r\n              ",
